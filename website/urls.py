@@ -5,4 +5,5 @@ app_name='website'
 
 urlpatterns = [
 path('', index, name='index')
+
 ]
