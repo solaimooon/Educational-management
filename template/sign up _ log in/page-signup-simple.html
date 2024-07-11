@@ -25,12 +25,13 @@
         <!-- End Heading -->
 
         <!-- Form -->
-        <form class="js-validate needs-validation" novalidate>
+        <form  action="{% url 'athentication:sign up' %}" method="post">
+            {% csrf_token %}
           <!-- Form -->
           <div class="mb-3">
-            <label class="form-label" for="signupSimpleSignupEmail">ایمیل شما</label>
-            <input type="email" class="form-control form-control-lg text-center" name="email" id="signupSimpleSignupEmail"
-              placeholder="email@site.com" aria-label="email@site.com" required>
+            <label class="form-label" for="signupSimpleSignupEmail">شماره موبایل</label>
+            <input type="number" class="form-control form-control-lg text-center" name="username" id="signupSimpleSignupEmail"
+              placeholder="09121234567" aria-label="email@site.com" required>
             <span class="invalid-feedback">لطفا یک آدرس ایمیل معتبر وارد کنید.</span>
           </div>
           <!-- End Form -->
@@ -95,7 +96,7 @@
           </div>
 
           <div class="text-center">
-            <p>از قبل حساب کاربری دارید؟<a class="link" href="./page-login-simple.html">از اینجا وارد شوید</a></p>
+            <p>از قبل حساب کاربری دارید؟<a class="link" href="{% url 'athentication:log in' %}">از اینجا وارد شوید</a></p>
           </div>
         </form>
         <!-- End Form -->
