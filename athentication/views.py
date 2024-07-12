@@ -22,12 +22,7 @@ def login_form(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                # render oprator page if usre be staff
-                if user.is_staff == True:
-                    return render(request,'dashbord_opratoe/oprator_base.html')
-                # render student base page if usre not be staff
-                else:
-                    return redirect("https://www.w3schools.com/python/gloss_python_string_length.asp")
+                return redirect('/dashbord/')
 
 
 
