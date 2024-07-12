@@ -9,7 +9,11 @@ from django.shortcuts import redirect
 from django.contrib import messages
 
 def login_form(request):
-    return render(request,'sign up _ log in/page-login-simple.html')
+    if request.method=='GET':
+        return render(request,'sign up _ log in/page-login-simple.html')
+    else:
+        pass
+
 
 
 def sign_up_form(request):
@@ -24,7 +28,14 @@ def sign_up_form(request):
             username=sign_up_form.cleaned_data["username"]
             global password
             password=sign_up_form.cleaned_data["password"]
+            # validate amount of password charector
+            str_password=str(password)
+            amount_charctor=len(str_password)
+            if amount_charctor<8 or amount_charctor==8:
+                messages.add_message(request, messages.ERROR, "حداقل طول رمز عبور 8 کاراکتر میباشد")
+                return redirect('/athentication/sign_up/')
             return HttpResponseRedirect(reverse("athentication:verification"))
+
         else:
             # IF the user exist return this massage
             messages.add_message(request, messages.ERROR, "نام کاربری تکراری میباشد")
@@ -52,7 +63,7 @@ def verification (request):
         # data must be send to api
         paloyd = {'receptor': str(username), 'token': str(verification_code), "template": "verify"}
         # request to kavenegar to send massage
-        response = requests.post(api, data=paloyd)
+        #response = requests.post(api, data=paloyd)
         return render(request,'sign up _ log in/verification.html')
     elif request.method=='POST':
         # get the numbers
@@ -65,6 +76,6 @@ def verification (request):
         # validate the user insert the cerect valodation code
         if number == verification_code:
             user = User.objects.create_user(username=username,password=password)
-            return redirect('https://www.w3schools.com/python/gloss_python_function_arbitrary_arguments.asp')
+            return render(request,'dashbord_opratoe/oprator_base.html')
 
 
