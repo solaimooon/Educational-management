@@ -6,6 +6,7 @@ from django.urls import reverse
 from .forms import Sign_up_form
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
+from django.contrib import messages
 
 def login_form(request):
     return render(request,'sign up _ log in/page-login-simple.html')
@@ -24,6 +25,11 @@ def sign_up_form(request):
             global password
             password=sign_up_form.cleaned_data["password"]
             return HttpResponseRedirect(reverse("athentication:verification"))
+        else:
+            # IF the user exist return this massage
+            messages.add_message(request, messages.ERROR, "نام کاربری تکراری میباشد")
+            return redirect('/athentication/sign_up/')
+
 
 
 def reset_password_form(request):
