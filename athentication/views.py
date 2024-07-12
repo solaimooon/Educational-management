@@ -37,6 +37,7 @@ def verification (request):
     if request.method=='GET':
         # create the random codde between 1001 until 9999 and define it global to use all over the fanction
         global verification_code
+        # creat the random number between the range give it
         verification_code = random.randint(1001, 9999)
         print(verification_code)
         key = '4338526C6C676E4C6932475636665246734C336E6F53666D735643652F3836627850537A426F796E674A4D3D'
