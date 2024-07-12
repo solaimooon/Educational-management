@@ -148,7 +148,16 @@
     </div>
   </header>
   <!-- ========== END HEADER ========== -->
-
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+              {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                  <script>swal("ناموفق", "{{ message }}", "error");</script>
+              {% endif %}
+          {% endfor %}
+      </ul>
+  {% endif %}
     {% block content %}
     {% endblock %}
 
