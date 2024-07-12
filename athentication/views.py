@@ -3,16 +3,31 @@ import requests
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .forms import Sign_up_form
+from .forms import *
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 
 def login_form(request):
     if request.method=='GET':
         return render(request,'sign up _ log in/page-login-simple.html')
     else:
-        pass
+        sign_in_form=sign_in(request.POST)
+        # validate the data post from the form html
+        if sign_in_form.is_valid():
+            username = request.POST["username"]
+            password = request.POST["password"]
+            # check the user exist or not
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                # render oprator page if usre be staff
+                if user.is_staff == True:
+                    return render(request,'dashbord_opratoe/oprator_base.html')
+                # render student base page if usre not be staff
+                else:
+                    return redirect("https://www.w3schools.com/python/gloss_python_string_length.asp")
 
 
 

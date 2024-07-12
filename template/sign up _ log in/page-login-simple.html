@@ -21,12 +21,13 @@
         <!-- End Heading -->
 
         <!-- Form -->
-        <form class="js-validate needs-validation" novalidate>
+        <form action="{% url 'athentication:log in' %}" method="post"  novalidate>
+            {% csrf_token %}
           <!-- Form -->
           <div class="mb-4">
-            <label class="form-label" for="signupSimpleLoginEmail">ایمیل شما</label>
-            <input type="email" class="form-control form-control-lg text-center" name="email"
-              id="signupSimpleLoginEmail" placeholder="email@site.com" aria-label="email@site.com" required>
+            <label class="form-label" for="signupSimpleLoginEmail">نام کاربری</label>
+            <input type="text" class="form-control form-control-lg text-center" name="username"
+              id="signupSimpleLoginEmail" placeholder="09121234567" aria-label="email@site.com" required>
             <span class="invalid-feedback">لطفا یک آدرس ایمیل معتبر وارد کنید.</span>
           </div>
           <!-- End Form -->
