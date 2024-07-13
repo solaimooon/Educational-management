@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
+
+@login_required(login_url='/athentication/')
 def dashbord(request):
     # render oprator page if usre be staff
+
     if request.user.is_staff==True:
         return render(request, 'dashbord_opratoe/oprator_base.html')
     # render student base page if usre not be staff
