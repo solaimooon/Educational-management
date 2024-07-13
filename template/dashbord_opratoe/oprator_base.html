@@ -8,7 +8,7 @@
   <title>داشبورد ادمین</title>
 
   <!-- Favicon -->
-  <link rel="shortcut icon" href="./favicon.ico">
+  <link rel="shortcut icon" href="{% static 'sign_up _ log in _dashbord/favicon.ico' %}">
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet">
@@ -27,8 +27,8 @@
     <div class="container">
       <nav class="js-mega-menu navbar-nav-wrap">
         <!-- Default Logo -->
-        <a class="navbar-brand" href="/index.html" aria-label="Front">
-          <img class="navbar-brand-logo" src="/assets/svg/logos/logo.svg" alt="Logo">
+        <a class="navbar-brand" href="#" aria-label="کانون میراث النبی (ص)">
+          <img class="navbar-brand-logo" src="{% static 'sign_up _ log in _dashbord/assets/img/logo.jpg' %}" alt="Logo">
         </a>
         <!-- End Default Logo -->
 
@@ -224,11 +224,11 @@
                         <i class="bi-person-badge nav-icon"></i>داشبورد
                       </a>
                     </li>
-                    <li class="nav-item">
+                    <!--<li class="nav-item">
                       <a class="nav-link" href="./account-security.html">
                         <i class="bi-shield-shaded nav-icon"></i> امنیت
                       </a>
-                    </li>
+                    </li>-->
 
                     <li class="nav-item">
                       <a class="nav-link" href="./account-overview.html">
@@ -238,43 +238,63 @@
                   </ul>
                   <!-- End List -->
 
-                  <span class="text-cap">فروشگاه</span>
+                  <span class="text-cap">کاربران</span>
 
                   <!-- List -->
                   <ul class="nav nav-sm nav-tabs nav-vertical mb-4">
                     <li class="nav-item">
                       <a class="nav-link " href="./admin-account-products.html">
-                        <i class="bi-shop-window nav-icon"></i> محصولات
+                        <i class="bi-person nav-icon"></i> لیست کاربران
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link " href="./admin-account-order.html">
-                        <i class="bi-receipt-cutoff nav-icon"></i> سفارشات
+                        <i class="bi-receipt-cutoff nav-icon"></i> ثبت نام و کلاس بندی
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link " href="./admin-account-support.html">
-                        <i class="bi-envelope nav-icon"></i> تیکت ها
+                        <i class="bi bi-book nav-icon"></i>کلاس های من
                       </a>
                     </li>
 
 
                   </ul>
 
-                  <span class="text-cap">کاربران</span>
+                  <span class="text-cap">پنل پیامکی </span>
 
                    <!-- List -->
                    <ul class="nav nav-sm nav-tabs nav-vertical mb-4">
                     <li class="nav-item">
                       <a class="nav-link " href="./admin-account-users.html">
-                        <i class="bi-person nav-icon"></i> لیست کاربران
+                        <i class="bi-envelope nav-icon"></i> ارسال پیامک
                       </a>
-                    </li>
+                    </li><!--
                     <li class="nav-item">
                       <a class="nav-link " href="./admin-account-newsletter.html">
                         <i class="bi-newspaper nav-icon"></i> خبرنامه
                       </a>
                     </li>
+                    -->
+                  </ul>
+                  <span class="text-cap">فرم ساز </span>
+                   <ul class="nav nav-sm nav-tabs nav-vertical mb-4">
+                    <li class="nav-item">
+                      <a class="nav-link " href="./admin-account-users.html">
+                        <i class="bi bi-bicycle nav-icon"></i> مسابقه
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="./admin-account-newsletter.html">
+                        <i class="bi-newspaper nav-icon"></i> نظرسنجی
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="./admin-account-users.html">
+                        <i class="bi bi-clipboard2-data nav-icon"></i> اطلاعیه
+                      </a>
+                    </li>
+
 
                   </ul>
 
@@ -287,7 +307,7 @@
                     <ul class="nav nav-sm nav-tabs nav-vertical">
                       <li class="nav-item">
                         <a class="nav-link" href="#">
-                          <i class="bi-box-arrow-right nav-icon"></i> خروج
+                          <i class="bi-box-arrow-right nav-icon"></i> ورود
                         </a>
                       </li>
                     </ul>

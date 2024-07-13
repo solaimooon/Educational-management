@@ -19447,8 +19447,8 @@ label.form-control {
 }
 .navbar-brand-logo {
   width: 100%;
-  min-width: 7.5rem;
-  max-width: 7.5rem;
+  min-width: 4.5rem;
+  max-width: 4.5rem;
 }
 .navbar-brand-collapsed,
 .navbar-brand-on-scroll {
