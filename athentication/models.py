@@ -15,7 +15,7 @@ type = (
 
 
 class extra_user_data(models.Model):
-    age=models.IntegerField(null=True,blank=True,verbose_name='سن')
+    age=models.DateField(null=True,blank=True,verbose_name='سن')
     adress=models.CharField(null=True,blank=True,max_length=500,verbose_name='ادرس')
     father_name=models.CharField(null=True,blank=True,max_length=50,verbose_name='نام پدر ')
     #type of user for ristricing
