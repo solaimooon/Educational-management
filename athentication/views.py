@@ -86,6 +86,6 @@ def verification (request):
         # validate the user insert the cerect valodation code
         if number == verification_code:
             user = User.objects.create_user(username=username,password=password)
-            return render(request,'dashbord_opratoe/oprator_base.html')
+            return redirect('/dashbord/')
 
 

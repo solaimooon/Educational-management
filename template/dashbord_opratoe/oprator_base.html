@@ -193,6 +193,7 @@
     <!-- End Breadcrumb -->
 
     <!-- Content Section -->
+
     <div class="container content-space-1 content-space-t-lg-0 content-space-b-lg-2 mt-lg-n10">
       <div class="row">
         <div class="col-lg-3">
@@ -205,12 +206,11 @@
                   <!-- Avatar -->
                   <div class="d-none d-lg-block text-center mb-5">
                     <div class="avatar avatar-xxl avatar-circle mb-3">
-                      <img class="avatar-img" src="./assets/img/160x160/img9.jpg" alt="Image Description">
-
+                      <img class="avatar-img" src="{{ request.session.picture }}" alt="Image Description">
                     </div>
 
-                    <h4 class="card-title mb-0">ناتالی کورتیس</h4>
-                    <p class="card-text small">natalie@example.com</p>
+                    <h4 class="card-title mb-0">{{ request.user.first_name }}</h4>
+                    <p class="card-text small">{{ request.user.username }}</p>
                   </div>
                   <!-- End Avatar -->
 
@@ -220,7 +220,7 @@
                   <!-- List -->
                   <ul class="nav nav-sm nav-tabs nav-vertical mb-4">
                     <li class="nav-item">
-                      <a class="nav-link" href="./account-home.html">
+                      <a class="nav-link" href="#">
                         <i class="bi-person-badge nav-icon"></i>داشبورد
                       </a>
                     </li>
@@ -231,7 +231,7 @@
                     </li>-->
 
                     <li class="nav-item">
-                      <a class="nav-link" href="./account-overview.html">
+                      <a class="nav-link" href="#">
                         <i class="bi-sliders nav-icon"></i> تنظیمات پروفایل
                       </a>
                     </li>
@@ -243,7 +243,7 @@
                   <!-- List -->
                   <ul class="nav nav-sm nav-tabs nav-vertical mb-4">
                     <li class="nav-item">
-                      <a class="nav-link " href="./admin-account-products.html">
+                      <a class="nav-link " href="{% url 'dashbord:student_info' %}">
                         <i class="bi-person nav-icon"></i> لیست کاربران
                       </a>
                     </li>
@@ -323,33 +323,15 @@
         </div>
         <!-- End Col -->
 
-        <div class="col-lg-9">
-          <!-- Card -->
-          <div class="card">
-            <!-- Header -->
-            <div class="card-header border-bottom">
-              <h5 class="card-header-title">خلاصه داشبورد</h5>
-            </div>
-            <!-- End Header -->
 
-            <!-- Body -->
-            <div class="card-body">
-              <div class="row">
+        {% block content %}
 
-              </div>
-              <!-- End Row -->
-
-            </div>
-            <!-- End Body -->
-          </div>
-          <!-- End Card -->
-        </div>
+        {% endblock %}
         <!-- End Col -->
       </div>
       <!-- End Row -->
     </div>
-    <!-- End Content Section -->
-  </main>
+</main>
   <!-- ========== END MAIN CONTENT ========== -->
 
   <!-- ========== FOOTER ========== -->
@@ -359,7 +341,7 @@
         <div class="col-lg-3 mb-7 mb-lg-0">
           <!-- Logo -->
           <div class="mb-5">
-            <a class="navbar-brand" href="./index.html" aria-label="Space">
+            <a class="navbar-brand" href="oprator_index.html" aria-label="Space">
               <img class="navbar-brand-logo" src="./assets/svg/logos/logo-white.svg" alt="Image Description">
             </a>
           </div>
