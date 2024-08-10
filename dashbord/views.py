@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage,InvalidPage
 
 
 @login_required(login_url='/athentication/')
@@ -20,15 +21,10 @@ def dashbord(request):
         return render(request, 'dashbord_opratoe/oprator_index.html',{"extra_data":extra_data})
     # render student base page if usre not be staff
     else:
-        # beacuse of sign up and the new user dont have any record in extra_user_data we need try/exeption
-        try:
-            extra_data = extra_user_data.objects.filter(forign_key=request.user.pk)[0]
-            request.session["picture"] = extra_data.image.url
-            return render(request, 'dashbord_student/student_index.html', {"extra_data": extra_data})
-        except:
-            #we need set picture in approch below beacuse we donat have record in extra_user_data
-            request.session["picture"] = '/media/personality_picture/boy.png'
-            return render(request, 'dashbord_student/student_index.html')
+        extra_data = extra_user_data.objects.filter(forign_key=request.user.pk)[0]
+        request.session["picture"] = extra_data.image.url
+        return render(request, 'dashbord_student/student_index.html', {"extra_data": extra_data})
+
 
 # Create your views here.
 
@@ -40,9 +36,16 @@ def student_info_list(request):
             "select * from athentication_extra_user_data where forign_key_id in(select id from auth_USER where is_staff=False)")
     # integrate the element of first itrable to element of second iterable as tuple -first element of first list to first element of second list
     zip_student=list(zip(students, students_extra_data))
-    print(list(zip_student))
-    contex={"zip_student":zip_student}
 
+    # paginating
+    paginating_object = Paginator(zip_student, 10)
+    try:
+        page_number_requested = request.GET.get('page_number')
+        the_page_requested=paginating_object.page(page_number_requested)
+    except InvalidPage:
+        the_page_requested = paginating_object.page(1)
+    print(list(zip_student))
+    contex={"zip_student":the_page_requested}
     return render(request, 'dashbord_opratoe/oprator_student_list.html', contex)
 
 @login_required(login_url='/athentication/')
@@ -56,40 +59,50 @@ def profile(request,pk=None):
     else:
         # show profile
         if request.method=='GET':
+            # get data of user
             student = User.objects.filter(id=pk)[0]
             student_extra_data = extra_user_data.objects.filter(forign_key=pk)[0]
-            image_form=update_extra_user_data()
-            return render(request, 'dashbord_student/student_profile.html',{"user_data": student, "extra_user_data": student_extra_data,'form':image_form})
+            # find object of the student phone in phone tabel to creat form with  previous data if there isnt any data we undrestand by ty/exeptin and create
+            # form without previous data
+            try:
+                # get phone of user
+                phone_of_student=phone.objects.filter(forign_key=pk)[0]
+                # creat form with privose data
+                phone_form_object = phone_form(instance=phone_of_student)
+            except:
+                phone_form_object = phone_form()
+            # create the form with previous user data
+            user_form_object=UserForm(instance=student)
+            extra_data_form=update_extra_user_data(instance=student_extra_data)
+            contex={"user_data": student, "extra_user_data": student_extra_data,"user_form":user_form_object,'form':extra_data_form,"phone_form":phone_form_object}
+            return render(request, 'dashbord_student/student_profile.html',contex)
         # update profile
         else:
             # find the pk of user in extra_user_data tabel if there isnt we undrestand by ty/exeptin and create new record for it
-            # for crete form with file data we must add request.files
+            # creatث form object for user and extra user data and phone to save it
+            # for crete form with file data such as image we must add request.files
+            UserForm_object = UserForm(request.POST)
             extra_user_data_form=update_extra_user_data(request.POST,request.FILES)
-            # handel update or complite profile by try/exeption
-            try:
-                # update data
-                extra_user_object = extra_user_data.objects.filter(forign_key=request.user.pk)[0]
-                if extra_user_data_form.is_valid():
-                    extra_user_object.image=extra_user_data_form.cleaned_data["image"]
-                    extra_user_object.age = extra_user_data_form.cleaned_data["age"]
-                    extra_user_object.save()
-                    # update the url of picture in session
-                    request.session["picture"]=extra_user_object.image.url
-                    return HttpResponseRedirect(reverse("dashbord:profile",kwargs={'pk':request.user.id}))
-            except:
-                # create new record
-                if extra_user_data_form.is_valid():
-                    extra_user_data_object=extra_user_data()
-                    extra_user_data_object.image=extra_user_data_form.cleaned_data["image"]
-                    extra_user_data_object.forign_key=request.user
-                    extra_user_data_object.save()
-                    request.session["picture"] = extra_user_data_object.image.url
-                    return HttpResponseRedirect(reverse("dashbord:profile",kwargs={'pk':request.user.id}))
-
-
-
-
-
-
-
-
+            phone_form_object=phone_form(request.POST)
+            if  UserForm_object.is_valid() and extra_user_data_form.is_valid() and phone_form_object.is_valid():
+                # update user and extra tabel
+                User.objects.filter(id=request.user.id).update(**UserForm_object.cleaned_data)
+                extra_user_data.objects.filter(forign_key=request.user).update(**extra_user_data_form.cleaned_data)
+                # update image sepratly ( i dont khow but image dosnt update automaticly )
+                image_user = extra_user_data.objects.filter(forign_key=request.user)[0]
+                image_user.image=extra_user_data_form.cleaned_data["image"]
+                image_user.save()
+                #
+                if phone_form_object.cleaned_data['phone_number'] != "":
+                    phone_object=phone()
+                    phone_object.phone_number=phone_form_object.cleaned_data['phone_number']
+                    phone_object.owner=phone_form_object.cleaned_data['owner']
+                    phone_object.forign_key=request.user
+                    phone_object.save()
+                else:
+                    print("user didnt sent phone form")
+                # update the url of picture in session
+                request.session["picture"]=extra_user_data.objects.filter(forign_key=request.user)[0].image.url
+                return HttpResponseRedirect(reverse("dashbord:profile",kwargs={'pk':request.user.id}))
+            else:
+                print("سلام ",extra_user_data_form.errors.as_data())  # here you print errors to terminal

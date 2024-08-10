@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'jalali_date',
+    "crispy_forms",
+    "crispy_bootstrap4",
     'athentication',
     'website',
     'dashbord',
@@ -157,3 +159,6 @@ JALALI_DATE_DEFAULTS = {
         }
     },
 }
+
+# crispy setting
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

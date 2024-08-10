@@ -23,6 +23,9 @@ def login_form(request):
             if user is not None:
                 login(request, user)
                 return redirect('/dashbord/')
+            else:
+                messages.add_message(request, messages.ERROR, "نام کاربری یا رمز عبور معتبر نمیباشد")
+                return redirect('/athentication/')
 
 
 
@@ -86,6 +89,8 @@ def verification (request):
         # validate the user insert the cerect valodation code
         if number == verification_code:
             user = User.objects.create_user(username=username,password=password)
+            extra_user_data.objects.create(forign_key=user)
+            login(request, user)
             return redirect('/dashbord/')
 
 
