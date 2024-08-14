@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django_jalali.db import models as jmodels
 
 
 type = (
@@ -15,12 +16,12 @@ class extra_user_data(models.Model):
         ('male', 'مرد'),
         ('female', 'زن')
     )
-    age=models.DateField(verbose_name='سن')
-    adress=models.CharField(max_length=500,verbose_name='ادرس')
+    age=jmodels.jDateField(blank=True,null=True,verbose_name='سن')
+    adress=models.CharField(blank=True,null=True,max_length=500,verbose_name='ادرس')
     #type of user for ristricing
-    type =models.CharField(max_length=50, choices=type,default="Guest")
-    meli_cood = models.CharField(null=True,blank=True,max_length=50, verbose_name="کد ملی")
-    sex = models.CharField(null=True,blank=True,max_length=50, choices=sex_choice,default='male')
+    type =models.CharField(blank=True,null=True,max_length=50, choices=type,default="Guest")
+    meli_cood = models.CharField(blank=True,null=True,max_length=50, verbose_name="کد ملی")
+    sex = models.CharField(blank=True,null=True,max_length=50, choices=sex_choice,default='male')
     forign_key = models.ForeignKey(User, on_delete=models.CASCADE)
     image=models.ImageField(upload_to='personality_picture/',default="personality_picture/boy.png")
 

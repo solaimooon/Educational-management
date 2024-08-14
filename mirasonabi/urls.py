@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('website.urls')),
     path('athentication/',include('athentication.urls')),
-    path('dashbord/',include('dashbord.urls'))
+    path('dashbord/',include('dashbord.urls')),
+    path('enroll_choose/',include('enroll.urls'))
 ]+ static( settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 

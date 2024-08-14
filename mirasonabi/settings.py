@@ -38,11 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'jalali_date',
+    'django_jalali',
     "crispy_forms",
     "crispy_bootstrap4",
+    'bootstrap_datepicker_plus'
     'athentication',
     'website',
     'dashbord',
+    'enroll'
 
 ]
 
