@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django_jalali',
     "crispy_forms",
     "crispy_bootstrap4",
-    'bootstrap_datepicker_plus'
+    'bootstrap4',
     'athentication',
     'website',
     'dashbord',

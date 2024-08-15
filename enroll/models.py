@@ -11,8 +11,15 @@ class klass(models.Model):
     end_data=jmodels.jDateField()
     start_time=models.TimeField(null=True)
     end_time=models.TimeField(null=True)
-    student=models.ManyToManyField(User,related_name='have_staudent')
-    status=models.BooleanField(null=True)
+    student=models.ManyToManyField(User,related_name='have_staudent',through='link_table')
+    status=models.BooleanField(default=True)
+    created_at=models.DateTimeField(auto_now_add=True,null=True)
+
+
+class link_table(models.Model):
+    klass_id = models.ForeignKey(klass,on_delete=models.CASCADE)
+    student_id = models.ForeignKey(User,on_delete=models.CASCADE)
+    result_of_class = models.BooleanField()
 
 
 
