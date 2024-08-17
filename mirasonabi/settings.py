@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'formset',
     'jalali_date',
     'django_jalali',
     "crispy_forms",
