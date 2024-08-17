@@ -96,7 +96,6 @@
         </style>
     </head>
     <body>
-
     <div class="col-lg-9">
         <!-- Card -->
         <div class="card">
@@ -109,76 +108,84 @@
             <!-- Body -->
             <div class="card-body">
                 <div class="row">
-                    <div class="row d-flex ">
-                        <div class="col-md-12 mb-3">
-                            <label for="validationValidInput1">نام کلاس </label>
-                            {{ klass_form_object.name|as_crispy_field }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="validationValidInput1">نام معلم</label>
-                            {{ klass_form_object.teacher|as_crispy_field }}
-
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label for="validationValidInput1">شماره دوره</label>
-                            {{ klass_form_object.course|as_crispy_field }}
-
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="validationValidSelect1"> تاریخ اولین جلسه </label>
-                            {{ klass_form_object.start_date|as_crispy_field }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="validationValidSelect1">ساعت شروع کلاس</label>
-                            {{ klass_form_object.start_time|as_crispy_field }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="validationValidSelect1"> تاریخ آخرین جلسه </label>
-                            {{ klass_form_object.end_data|as_crispy_field }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="validationValidSelect1">ساعت پایان کلاس</label>
-                            {{ klass_form_object.end_time|as_crispy_field }}
-                        </div>
-                        <!-- dual list box -->
-                        <div class="col-md-12 mb-3">
-                            <label for="validationValidSelect1">افزودن دانش آموز</label>
-                            <div class="dual-list-box-container">
-                                <!-- Destination list box -->
-                                <div>
-                                    <select name="colors" id="destination" class="list-box" multiple></select>
-                                    <div class="select-buttons">
-                                        <button type="button" id="select-all-destination">انتخاب همه</button>
-                                        <button type="button" id="clear-destination">هیچ‌کدام</button>
-                                    </div>
-                                </div>
-
-                                <!-- Buttons for moving items between the lists -->
-                                <div class="button-group">
-                                    <button type="button" id="move-left">&lt;</button>
-                                    <button type="button" id="move-all-left">&lt;&lt;</button>
-                                    <button type="button" id="move-all-right">&gt;&gt;</button>
-                                    <button type="button" id="move-right">&gt;</button>
-                                </div>
-
-                                <!-- Source list box -->
-                                <div>
-                                    <select id="source" class="list-box" multiple>
-                                        {% for color in student_picker_object.colors.field.queryset %}
-                                            <option value="{{ color.pk }}">{{ color.get_full_name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <div class="select-buttons">
-                                        <button type="button" id="select-all-source">انتخاب همه</button>
-                                        <button type="button" id="clear-source">هیچ‌کدام</button>
-                                    </div>
-                                </div>
+                    <form method="post" action="{% url 'enroll:create_class' %}">
+                    {% csrf_token %}
+                        <div class="row d-flex ">
+                            <div class="col-md-12 mb-3">
+                                <label for="validationValidInput1">نام کلاس </label>
+                                {{ klass_form_object.name|as_crispy_field }}
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="validationValidInput1">نام معلم</label>
+                                {{ klass_form_object.teacher|as_crispy_field }}
 
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="validationValidInput1">شماره دوره</label>
+                                {{ klass_form_object.course|as_crispy_field }}
+
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="validationValidSelect1"> تاریخ اولین جلسه </label>
+                                {{ klass_form_object.start_date|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="validationValidSelect1">ساعت شروع کلاس</label>
+                                {{ klass_form_object.start_time|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="validationValidSelect1"> تاریخ آخرین جلسه </label>
+                                {{ klass_form_object.end_data|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="validationValidSelect1">ساعت پایان کلاس</label>
+                                {{ klass_form_object.end_time|as_crispy_field }}
+                            </div>
+                            <!-- dual list box -->
+                            <div class="col-md-12 mb-3">
+                                <label for="validationValidSelect1">افزودن دانش آموز</label>
+                                <div class="dual-list-box-container">
+                                    <!-- Destination list box -->
+                                    <div>
+                                        <select name="students" id="destination" class="list-box" multiple></select>
+                                        <div class="select-buttons">
+                                            <button type="button" id="select-all-destination">انتخاب همه</button>
+                                            <button type="button" id="clear-destination">هیچ‌کدام</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Buttons for moving items between the lists -->
+                                    <div class="button-group">
+                                        <button type="button" id="move-left">&lt;</button>
+                                        <button type="button" id="move-all-left">&lt;&lt;</button>
+                                        <button type="button" id="move-all-right">&gt;&gt;</button>
+                                        <button type="button" id="move-right">&gt;</button>
+                                    </div>
+
+                                    <!-- Source list box -->
+                                    <div>
+                                        <select id="source" class="list-box" multiple>
+                                            {% for student in student_picker_object.students.field.queryset %}
+                                                <option value="{{ student.pk }}">{{ student.get_full_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <div class="select-buttons">
+                                            <button type="button" id="select-all-source">انتخاب همه</button>
+                                            <button type="button" id="clear-source">هیچ‌کدام</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
+                        <div class="card-footer pt-0">
+                            <div class="d-flex justify-content-end gap-3">
+                                <a class="btn btn-danger" href="{% url 'enroll:enroll_choose' %}">لغو</a>
+                                <button class="btn btn-primary" type="submit">ذخیره تغییرات</button>
+                            </div>
+                        </div>
+                    </form>
 
-
-                    </div>
                 </div>
                 <!-- End Row -->
 
@@ -188,7 +195,6 @@
         </div>
         <!-- End Card -->
     </div>
-
     <script>
         // JavaScript to handle moving options between lists
         document.getElementById('move-right').addEventListener('click', function () {

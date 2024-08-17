@@ -10,8 +10,7 @@ from athentication.models import *
 class klass_form(forms.ModelForm):
         class Meta:
             model = klass
-            fields = ['name', 'teacher', 'course', 'start_date', 'end_data', 'start_time', 'end_time',
-                      'status']
+            fields = ['name', 'course', 'start_date', 'end_data', 'start_time', 'end_time','teacher']
 
             # blow widget for time picker
             widgets = {
@@ -38,14 +37,8 @@ class klass_form(forms.ModelForm):
 
 
 
-class ColorForm(forms.Form):
-    def query(self):
-        list=[]
-        x = extra_user_data.objects.filter()
-        for y in x:
-            list.append(y.forign_key)
-        return list
-    colors = forms.models.ModelMultipleChoiceField(
+class enroll_student_form(forms.Form):
+    students = forms.models.ModelMultipleChoiceField(
         queryset=User.objects.filter(id__in=extra_user_data.objects.filter(type='Guest').values_list('forign_key')),
         widget=forms.SelectMultiple(attrs={'class': 'dual-list-box'})
     )

@@ -17,9 +17,14 @@ class klass(models.Model):
 
 
 class link_table(models.Model):
+    choice_result=(
+        ('studing','در حال تحصیل'),
+        ('pass',"قبول"),
+        ('fail','مردود')
+    )
     klass_id = models.ForeignKey(klass,on_delete=models.CASCADE)
     student_id = models.ForeignKey(User,on_delete=models.CASCADE)
-    result_of_class = models.BooleanField()
+    result_of_class = models.CharField(choices=choice_result,default='studing',max_length=30)
 
 
 
