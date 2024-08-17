@@ -24,6 +24,11 @@ def create_class_view(request):
             klass_object.student.set(students)
             return redirect("https://toplearn.com/")
 
+def my_class_view(request):
+    klass_object=klass.objects.filter(teacher=request.user.id).order_by('-course')
+    return render(request,'enroll/my_class.html',{"klass_object":klass_object})
+
+
 
 
 
