@@ -34,6 +34,10 @@ class klass_form(forms.ModelForm):
                                                 widget=AdminJalaliDateWidget)  # optional, to use default datepicker
             self.fields['end_data'] = JalaliDateField(label=('تاریخ پایان کلاس'),  # date format is  "yyyy-mm-dd"
                                                  widget=AdminJalaliDateWidget)  # optional, to use default datepicker
+            self.fields['teacher']=forms.ModelChoiceField(
+                queryset=User.objects.filter(is_staff=True),
+                widget = forms.Select(attrs={'class': 'form-control select2'})
+            )
 
 
 
