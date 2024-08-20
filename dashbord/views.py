@@ -48,13 +48,29 @@ def student_info_list(request):
     contex={"zip_student":the_page_requested}
     return render(request, 'dashbord_opratoe/oprator_student_list.html', contex)
 
+# edit profile
 @login_required(login_url='/athentication/')
 def profile(request,pk=None):
     #the staff profile
     if request.user.is_staff == True:
+        # get data of user
         student = User.objects.filter(id=pk)[0]
         student_extra_data = extra_user_data.objects.filter(forign_key=pk)[0]
-        return render(request,'dashbord_opratoe/operator_profile.html',{"user_data":student,"extra_user_data":student_extra_data})
+        # find object of the student phone in phone tabel to creat form with  previous data if there isnt any data we undrestand by ty/exeptin and create
+        # form without previous data
+        try:
+            # get phone of user
+            phone_of_student = phone.objects.filter(forign_key=pk)[0]
+            # creat form with privose data
+            phone_form_object = phone_form(instance=phone_of_student)
+        except:
+            phone_form_object = phone_form()
+        # create the form with previous user data
+        user_form_object = UserForm(instance=student)
+        extra_data_form = update_extra_user_data(instance=student_extra_data)
+        contex = {"user_data": student, "extra_user_data": student_extra_data, "user_form": user_form_object,
+                  'form': extra_data_form, "phone_form": phone_form_object}
+        return render(request, 'dashbord_opratoe/operator_profile.html', contex)
     # the student profile
     else:
         # show profile
