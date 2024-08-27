@@ -64,12 +64,12 @@ toggle_on
                                         <div class="col-md-12">
                                             <div class="d-grid gap-2">
                                                 <a class="btn btn-white btn-sm" href="#">
-                                                    <i class="bi-receipt small me-2"></i>جزئیات
+                                                    <i class="bi-receipt small me-2"></i>جزئیات کلاس
                                                 </a>
                                                 <a class="btn btn-white btn-sm" href="#">
                                                     <i class="bi-receipt small me-2"></i>گزارش
                                                 </a>
-                                                <a class="btn btn-primary btn-sm" href="#">ثبت امتیاز و حضور</a>
+                                                <a class="btn btn-primary btn-sm" href="{% url 'score:choose_date' id=klass.pk %}">ثبت امتیاز و حضور</a>
                                             </div>
                                         </div>
                                     </div>

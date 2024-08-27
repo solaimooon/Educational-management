@@ -31,6 +31,7 @@ def dashbord(request):
 
 @login_required(login_url='/athentication/')
 def student_info_list(request):
+
     students=User.objects.filter(is_staff=False)
     students_extra_data=extra_user_data.objects.raw(
             "select * from athentication_extra_user_data where forign_key_id in(select id from auth_USER where is_staff=False)")
