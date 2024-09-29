@@ -8,6 +8,8 @@ import urllib
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import jdatetime
+# massage framwork
+from django.contrib import messages
 from django.shortcuts import redirect
 
 def choose_date_view(request,id):
@@ -30,7 +32,7 @@ def choose_date_view(request,id):
     return render(request,'score/choose_date.html',{"dates":list_date})
 
 # save the hozore and score
-def post_score_view(request):
+def post_score_view(request,id=None):
     # (GET method)show the form
     if request.method == 'GET':
         # get the date whene clik date
@@ -58,7 +60,7 @@ def post_score_view(request):
                 basic_kosha_form_object=basic_kosha_form()
                 return render(request,'score/basic_form_score.html',{"basic_kosha_form_object":basic_kosha_form_object,"presence_absence_form_object":presence_absence_form_object,"pure_emtiyaz_and_form_object":pure_emtiyaz_and_form_object,"list_of_scores":list_of_scores})
     # (POST method) creat new present and score object
-    else:
+    elif request.method == "POST":
         # creat presence object if "was" field in post request
         if "was" in request.POST:
             presence_absence_form_object = presence_absence_form(request.POST)
@@ -93,7 +95,14 @@ def post_score_view(request):
                         print ("number",new_score_amount_object.number)
                         print("type",new_score_amount_object.type)
                         new_score_amount_object.save()
-                        return HttpResponseRedirect(reverse("score:post_score"))
+                    return HttpResponseRedirect(reverse("score:post_score"))
+# delete the scores
+def delete_csore_view(request,id):
+    if request.method == 'POST':
+        print("delete:",id)
+        score.objects.filter(id=id).delete()
+        return HttpResponseRedirect(reverse("score:post_score"))
+
 
 
 def retrive_score_saved(request,date):
