@@ -430,10 +430,10 @@ a.link-1.active::before
 /*-- button color - green --*/
 .button-green{
   color:#262626;
-  background:#4ebd87;
+  background: #ffffff;
 }
 .button-green::before{
-  background:#4ebd87;
+  background: #21325b;
 }
 
 /*-- button color - red --*/
@@ -794,7 +794,7 @@ label.loading::before{
   filter:blur(5px);
 }
 .preloader-container .preloader-text{
-  color:#00e4b6;
+  color: #ffffff;
   margin-top:10px;
   font-size:12px;
   letter-spacing:0;
@@ -832,7 +832,7 @@ label.loading::before{
   height: 62.5px;
   border-radius: 50%;
   border: 3.125px solid transparent;
-  border-top-color: #00e4b6;
+  border-top-color: #ffffff;
 }
 
 
@@ -965,7 +965,7 @@ label.loading::before{
   right: 0;
   top: 0;
   position: absolute;
-  background-color: #4ebd87;
+  background-color: rgba(33,50,91,1);
   border-radius: 50%;
   z-index: 18;
   overflow: hidden;
@@ -1415,7 +1415,7 @@ a.social-media::before{
   -ms-transition:all 0.5s ease 0ms;
   -o-transition:all 0.5s ease 0ms;
   transition:all 0.5s ease 0ms;
-  background:#4ebd87;
+  background: #21325b;
   z-index:-1;
 }
 a.social-media:hover::before{

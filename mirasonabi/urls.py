@@ -25,6 +25,6 @@ urlpatterns = [
     path('athentication/',include('athentication.urls')),
     path('dashbord/',include('dashbord.urls')),
     path('enroll_choose/',include('enroll.urls')),
-    path('choose_date/<int:id>',include('score.urls'))
+    path('choose_date/',include('score.urls'))
 ]+ static( settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 

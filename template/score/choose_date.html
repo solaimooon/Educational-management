@@ -23,7 +23,7 @@
                 {% for date in dates %}
                     <div class="row">
                     <li>
-                        <a href="" class="float-right" >{{ date }}</a>
+                        <a href="{% url 'score:post_score'%}?date={{ date }}" >{{ date }}</a>
                     </li>
                     <br>
                     <br>

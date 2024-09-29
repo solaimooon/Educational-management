@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django_jalali.db import models as jmodels
-from django.contrib.auth.models import User
+
+
 # change the name of user instanse for show the full name of teacher in kalss form creation
 def get_full_name(self):
     return "{} {}".format(self.first_name, self.last_name)

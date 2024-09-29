@@ -121,10 +121,16 @@
 
                             </div>
                             <div class="col-md-3 mb-3">
+                                <label for="validationValidInput1">سطح</label>
+                                {{ klass_form_object.level|as_crispy_field }}
+
+                            </div>
+                            <div class="col-md-3 mb-3">
                                 <label for="validationValidInput1">شماره دوره</label>
                                 {{ klass_form_object.course|as_crispy_field }}
 
                             </div>
+
                             <div class="col-md-6 mb-3">
                                 <label for="validationValidSelect1"> تاریخ اولین جلسه </label>
                                 {{ klass_form_object.start_date|as_crispy_field }}
