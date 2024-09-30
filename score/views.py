@@ -55,10 +55,14 @@ def post_score_view(request,id=None):
             # show the basic_kosha_form
             if klass_object.level.name in ["روانخوانی متوسط","روانخوانی پایه","روانخوانی خوب"]:
                 # get emtiyazat that saved before
+                # call the retrive_score_saved
                 list_of_scores = retrive_score_saved(request, date)
                 print(list_of_scores)
+                # get absent or present saved before
+                # call retirve present function
+                presents_objects=retrive_present_or_absent(request)
                 basic_kosha_form_object=basic_kosha_form()
-                return render(request,'score/basic_form_score.html',{"basic_kosha_form_object":basic_kosha_form_object,"presence_absence_form_object":presence_absence_form_object,"pure_emtiyaz_and_form_object":pure_emtiyaz_and_form_object,"list_of_scores":list_of_scores})
+                return render(request,'score/basic_form_score.html',{"basic_kosha_form_object":basic_kosha_form_object,"presence_absence_form_object":presence_absence_form_object,"pure_emtiyaz_and_form_object":pure_emtiyaz_and_form_object,"list_of_scores":list_of_scores,"presents_objects":presents_objects})
     # (POST method) creat new present and score object
     elif request.method == "POST":
         # creat presence object if "was" field in post request
@@ -104,9 +108,18 @@ def delete_csore_view(request,id):
         return HttpResponseRedirect(reverse("score:post_score"))
 
 
+# delete present object
+def delete_present_view(request,id):
+    if request.method == 'POST':
+        print("delete:",id)
+        presence_absence.objects.filter(id=id).delete()
+        return HttpResponseRedirect(reverse("score:post_score"))
 
+
+
+
+# function , not view
 def retrive_score_saved(request,date):
-    # convert sting date to jdate object
     enrolls = link_table.objects.filter(klass_id=request.session.get("klass_id"))
     scores = score.objects.filter(enroll_id__in=enrolls, date_for=date)
     amounts = amount.objects.filter(score_id__in=scores).order_by("score_id")
@@ -133,6 +146,12 @@ def retrive_score_saved(request,date):
     if first_list:
         second_list.append(first_list)
     return second_list
+
+
+def retrive_present_or_absent(request):
+    enrolls = link_table.objects.filter(klass_id=request.session.get("klass_id"))
+    present_object=presence_absence.objects.filter(enroll__in=enrolls,date=date)
+    return present_object
 
 
 

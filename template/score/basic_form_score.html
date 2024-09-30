@@ -95,46 +95,34 @@
                                 <table class="table">
                                     <thead class="thead-light">
                                     <tr>
-                                        <th scope="col">#</th>
                                         <th scope="col">نام</th>
                                         <th scope="col">نام خانوادگی</th>
-                                        <th scope="col">ایمیل</th>
-                                        <th scope="col">زمان ثبت نام</th>
-                                        <th scope="col">وضعیت</th>
+                                        <th scope="col"> تاریخ</th>
+                                        <th scope="col">ساعت حضور</th>
                                         <th scope="col">عملیات</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>مریم</td>
-                                        <td>فرجیان</td>
-                                        <td>farajian.maryam3@gmail.com</td>
-                                        <td>10/2/2023</td>
-                                        <td><span class="badge bg-success">فعال</span></td>
-                                        <td>
-                                            <a class="btn btn-sm btn-icon btn-ghost-danger"><i
-                                                    class="bi-trash"></i></a>
-                                            <a class="btn btn-sm btn-icon btn-ghost-secondary"><i
-                                                    class="bi-pencil-square"></i></a>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>علی</td>
-                                        <td>بیگدلی</td>
-                                        <td>bigdeli.ali3@gmail.com</td>
-                                        <td>10/2/2023</td>
-                                        <td><span class="badge bg-danger">غیر فعال</span></td>
-                                        <td>
-                                            <a class="btn btn-sm btn-icon btn-ghost-danger"><i
-                                                    class="bi-trash"></i></a>
-                                            <a class="btn btn-sm btn-icon btn-ghost-secondary"><i
-                                                    class="bi-pencil-square"></i></a>
-                                        </td>
-                                    </tr>
-
+                                    {% for present_object in presents_objects %}
+                                        <tr>
+                                            <td>{{ present_object.enroll.student_id.first_name }}</td>
+                                            <td>{{ present_object.enroll.student_id.last_name }}</td>
+                                            <td>{{ present_object.date }}</td>
+                                            <td>{{ present_object.time }}</td>
+                                            <td>
+                                                <form id="delete-present-form-{{ present_object.id }}"
+                                                      action="{% url "score:delete_present" id=present_object.id %}"
+                                                      method="POST">
+                                                    {% csrf_token %}
+                                                    <a href="javascript:void(0);"
+                                                       class="btn btn-sm btn-icon btn-ghost-danger"
+                                                       onclick="confirmDelete_present('{{ present_object.id }}')">
+                                                        <i class="bi-trash"></i>
+                                                    </a>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -341,7 +329,9 @@
                                                     </td>
                                                     <!-- Actions -->
                                                     <td>
-                                                        <form id="delete-form-{{ score_list.0.score_id }}" action="{% url "score:delete_score" id=score_list.0.score_id %}" method="POST">
+                                                        <form id="delete-form-{{ score_list.0.score_id }}"
+                                                              action="{% url "score:delete_score" id=score_list.0.score_id %}"
+                                                              method="POST">
                                                             {% csrf_token %}
                                                             <a href="javascript:void(0);"
                                                                class="btn btn-sm btn-icon btn-ghost-danger"
@@ -409,7 +399,26 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     // If confirmed, submit the form
-                    document.getElementById('delete-form-'+ objectId).submit();
+                    document.getElementById('delete-form-' + objectId).submit();
+                }
+            });
+        }
+    </script>
+    <script>
+        function confirmDelete_present(objectId) {
+            // Trigger SweetAlert confirmation
+            Swal.fire({
+                title: 'آیا مطمئن هستید؟',
+                text: "پس از حذف قادر به بازیابی نمی باشید",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'بله حذف کن!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, submit the form
+                    document.getElementById('delete-present-form-' + objectId).submit();
                 }
             });
         }
