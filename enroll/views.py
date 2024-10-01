@@ -24,9 +24,16 @@ def create_class_view(request):
             klass_object.student.set(students)
             return redirect("https://toplearn.com/")
 
-def my_class_view(request):
+
+#show class for teather in own dashbord
+def my_class_oprator_view(request):
     klass_object=klass.objects.filter(teacher=request.user.id).order_by('-course')
     return render(request,'enroll/my_class.html',{"klass_object":klass_object})
+
+
+#show class for student in own dashbord
+def my_class_student_view(request):
+    return render(request,'enroll/my_class_student.html')
 
 
 
