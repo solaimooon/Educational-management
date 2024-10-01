@@ -38,4 +38,16 @@ class amount(models.Model):
     type=models.ForeignKey(type,on_delete=models.SET_NULL,null=True)
 
 
-# Create your models here.
+# define views sum_final and each session.
+class sum_emtiyazat(models.Model):
+    id = models.BigIntegerField(primary_key=True)
+    score=models.ForeignKey(score,on_delete=models.DO_NOTHING)
+    enroll=models.ForeignKey(link_table,on_delete=models.DO_NOTHING)
+    date_for=jmodels.jDateField()
+    sumed_emtiyaz=models.DecimalField(max_digits=10,decimal_places=2)
+    class Meta:
+        managed = False
+        db_table = 'sum_emtiyazat'
+
+
+
