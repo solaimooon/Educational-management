@@ -33,7 +33,8 @@ def my_class_oprator_view(request):
 
 #show class for student in own dashbord
 def my_class_student_view(request):
-    return render(request,'enroll/my_class_student.html')
+    enroll_objects=link_table.objects.filter(student_id=request.user.id)
+    return render(request,'enroll/my_class_student.html',{"enroll_objects":enroll_objects})
 
 
 
