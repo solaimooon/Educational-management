@@ -166,8 +166,8 @@
                             </div>
                             <!-- Buttons (Right side now) -->
                             <div class="left-section">
-                                <button class="back-button">جزئیات کلاس ←</button>
-                                <button class="comment-button">گزارش عملکرد من</button>
+                                <button href="" class="back-button">جزئیات کلاس ←</button>
+                                <a href="{% url 'enroll:report' id_enroll=class.pk %}"><button  class="comment-button">گزارش عملکرد من</button></a>
                             </div>
                         </div>
                     {% endfor %}

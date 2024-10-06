@@ -52,5 +52,8 @@ class sum_emtiyazat(models.Model):
 class SUM_final(models.Model):
     enroll=models.ForeignKey(link_table,on_delete=models.DO_NOTHING)
     SUM=models.DecimalField(max_digits=10,decimal_places=2)
+    class Meta:
+        managed=False
+        db_table='SUM_final'
 
 

@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from .forms import *
 from .models import *
+from score.models import *
+from django.shortcuts import get_object_or_404
 
 def enroll_choose(request):
     return render(request,'enroll/choose_enroll_or_edit.html')
@@ -35,6 +37,26 @@ def my_class_oprator_view(request):
 def my_class_student_view(request):
     enroll_objects=link_table.objects.filter(student_id=request.user.id)
     return render(request,'enroll/my_class_student.html',{"enroll_objects":enroll_objects})
+
+# report generaly to studnet
+def report_general_student_view(request,id_enroll):
+    # sum of emtiyazat
+    sum_emtiyaz_for_all_session=get_object_or_404(SUM_final,enroll=id_enroll)
+    # colculate the rank
+    all_object_of_sum=SUM_final.objects.all().order_by('SUM')
+    counter=1
+    for object in all_object_of_sum:
+        if object==sum_emtiyaz_for_all_session:
+            break
+        else:
+            counter+=1
+    #end calculate
+    return render(request,'enroll/report.html',{"sum_emtiyaz_for_all_session":sum_emtiyaz_for_all_session,"rank":counter})
+
+# report point student
+def report_point_detail_view(request):
+    pass
+
 
 
 
