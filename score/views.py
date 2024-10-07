@@ -66,14 +66,14 @@ def post_score_view(request,id=None):
     # (POST method) creat new present and score object
     elif request.method == "POST":
         # creat presence object if "was" field in post request
-        if "was" in request.POST:
+        if "was_or_not_or" in request.POST:
             presence_absence_form_object = presence_absence_form(request.POST)
             # validation
             if presence_absence_form_object.is_valid():
                 presence_absence.objects.create(
                     date=date,
                     time=presence_absence_form_object.cleaned_data['time'],
-                    was=presence_absence_form_object.cleaned_data['was'],
+                    was_or_not_or=presence_absence_form_object.cleaned_data['was_or_not_or'],
                     enroll=presence_absence_form_object.cleaned_data['enroll']
                 )
                 request.session["enroll"]=presence_absence_form_object.cleaned_data['enroll'].id

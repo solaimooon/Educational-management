@@ -5,10 +5,15 @@ from enroll.models import *
 
 
 class presence_absence(models.Model):
+    was_or_not= (
+        ('present', 'حاضر'),
+        ('absent_unwarranted', 'غایب/غیر موجه'),
+        ('absent_warranted', 'غایب/موجه')
+    )
     enroll=models.ForeignKey(link_table,on_delete=models.CASCADE)
-    time=models.TimeField()
-    was=models.BooleanField()
-    date=jmodels.jDateField(null=True)
+    was_or_not_or = models.CharField(choices=was_or_not, max_length=50)
+    time=models.TimeField(null=True)
+    date=jmodels.jDateField()
 
 
 class score (models.Model):

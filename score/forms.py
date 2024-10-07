@@ -10,10 +10,11 @@ class presence_absence_form(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if klass_id is not None:
             self.fields['enroll'].queryset = link_table.objects.filter(klass_id=klass_id)
-
+        # Set the 'time' field to not required
+        self.fields['time'].required = False
     class Meta:
         model = presence_absence
-        fields = ['was', 'time', 'enroll']
+        fields = [ 'was_or_not_or','time', 'enroll']
         widgets = {
             'time': forms.TimeInput(
                 attrs={
