@@ -49,7 +49,7 @@
                                     <!-- present or absent form -->
                                     <div class="row mb-4">
                                         <label for="emailLabel"
-                                               class="col-sm-3 col-form-label form-label">حاضر</label>
+                                               class="col-sm-3 col-form-label form-label">حاضر/ غایب</label>
 
                                         <div class="col-sm-9">
                                             {{ presence_absence_form_object.was_or_not_or|as_crispy_field }}
@@ -60,7 +60,7 @@
                                     <!-- Form time hozore -->
                                     <div class="row mb-4">
                                         <label for="emailLabel"
-                                               class="col-sm-3 col-form-label form-label">ساعت حضور</label>
+                                               class="col-sm-3 col-form-label form-label"> حضور</label>
                                         <div class="col-sm-9">
                                             {{ presence_absence_form_object.time|as_crispy_field }}
                                         </div>
@@ -98,7 +98,7 @@
                                         <th scope="col">نام</th>
                                         <th scope="col">نام خانوادگی</th>
                                         <th scope="col"> تاریخ</th>
-                                        <th scope="col">ساعت حضور</th>
+                                        <th scope="col"> حضور/غیاب</th>
                                         <th scope="col">عملیات</th>
                                     </tr>
                                     </thead>
@@ -108,7 +108,11 @@
                                             <td>{{ present_object.enroll.student_id.first_name }}</td>
                                             <td>{{ present_object.enroll.student_id.last_name }}</td>
                                             <td>{{ present_object.date }}</td>
+                                            {% if present_object.time == None %}
+                                            <td>غایب</td>
+                                            {% else %}
                                             <td>{{ present_object.time }}</td>
+                                            {% endif %}
                                             <td>
                                                 <form id="delete-present-form-{{ present_object.id }}"
                                                       action="{% url "score:delete_present" id=present_object.id %}"
