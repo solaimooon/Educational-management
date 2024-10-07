@@ -1,13 +1,16 @@
 {% extends 'sign up _ log in/base.html' %}
 {% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="utf-8">
     <title>ثبت نام ساده | جلو - قالب چند منظوره پاسخگو</title>
+    <!-- Include Bootstrap Icons for the eye icon -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
 <body>
-{% block content %}
+
   <!-- ========== MAIN CONTENT ========== -->
     <main id="content" role="main">
     <!-- Form -->
@@ -36,20 +39,14 @@
           <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
               <label class="form-label" for="signupSimpleLoginPassword">کلمه عبور</label>
-
             </div>
 
-            <div class="input-group input-group-merge" data-hs-validation-validate-class>
-              <input type="password" class="js-toggle-password form-control form-control-lg text-center" name="password"
+            <div class="input-group input-group-merge">
+              <input type="password" class="form-control form-control-lg text-center" name="password"
                 id="signupSimpleLoginPassword" placeholder="8+ characters required" aria-label="8+ characters required"
-                required minlength="8" data-hs-toggle-password-options='{
-                "target": "#changePassTarget",
-                "defaultClass": "bi-eye-slash",
-                "showClass": "bi-eye",
-                "classChangeTarget": "#changePassIcon"
-              }'>
-              <a id="changePassTarget" class="input-group-append input-group-text" href="javascript:;">
-                <i id="changePassIcon" class="bi-eye"></i>
+                required minlength="8">
+              <a id="changePassTarget" class="input-group-append input-group-text" href="javascript:;" onclick="togglePassword()">
+                <i id="changePassIcon" class="bi bi-eye"></i>
               </a>
             </div>
 
@@ -72,8 +69,25 @@
     <!-- End Form -->
   </main>
   <!-- ========== END MAIN CONTENT ========== -->
-{% endblock %}
 
+  <!-- Script to toggle password visibility -->
+  <script>
+    function togglePassword() {
+      const passwordField = document.getElementById('signupSimpleLoginPassword');
+      const passIcon = document.getElementById('changePassIcon');
+
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        passIcon.classList.remove('bi-eye');
+        passIcon.classList.add('bi-eye-slash');
+      } else {
+        passwordField.type = "password";
+        passIcon.classList.remove('bi-eye-slash');
+        passIcon.classList.add('bi-eye');
+      }
+    }
+  </script>
 </body>
 
 </html>
+{% endblock %}
