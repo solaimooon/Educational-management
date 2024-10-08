@@ -7,7 +7,8 @@ from .forms import *
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
+
 
 def login_form(request):
     if request.method=='GET':
@@ -27,6 +28,9 @@ def login_form(request):
                 messages.add_message(request, messages.ERROR, "نام کاربری یا رمز عبور معتبر نمیباشد")
                 return redirect('/athentication/')
 
+def log_out_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("website:index"))
 
 
 def sign_up_form(request):
