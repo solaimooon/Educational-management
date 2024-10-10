@@ -61,13 +61,26 @@ def sign_up_form(request):
 
 
 def reset_password_form(request):
-    return render(request,'sign up _ log in/page-reset-password-simple.html')
+    if request.method=='GET':
+        return render(request,'sign up _ log in/page-reset-password-simple.html')
+    else:
+        phone_number=request.POST.get("phone_number")
+        global username
+        username=phone_number
+        print ("phone",phone_number)
+        if User.objects.filter(username=phone_number).exists():
+            return HttpResponseRedirect(reverse("athentication:verification"))
+        else:
+            messages.add_message(request, messages.ERROR, "نام کاربری موجود نمیباشد")
+            return HttpResponseRedirect(reverse('athentication:reset_password'))
+
+
+
 # Create your views here.
 
 
 # this function send verification and render the verification template
 def verification (request):
-
     if request.method=='GET':
         # create the random codde between 1001 until 9999 and define it global to use all over the fanction
         global verification_code
@@ -92,9 +105,30 @@ def verification (request):
         number=int (number1+number2+number3+number4)
         # validate the user insert the cerect valodation code
         if number == verification_code:
-            user = User.objects.create_user(username=username,password=password)
-            extra_user_data.objects.create(forign_key=user)
-            login(request, user)
-            return redirect('/dashbord/')
+            # update password
+            user=User.objects.get(username=username)
+            if user is not None:
+                extra_data = extra_user_data.objects.filter(forign_key=user.id)[0]
+                request.session["picture"] =extra_data.image.url
+                login(request, user)
+                return HttpResponseRedirect(reverse('athentication:update_password'))
+            else:
+                user = User.objects.create_user(username=username,password=password)
+                extra_user_data.objects.create(forign_key=user)
+                login(request, user)
+                return redirect('/dashbord/')
+
+def update_password_view(request):
+    if request.method=='GET':
+        return render(request,'sign up _ log in/update password.html')
+    else:
+        newPassword=request.POST.get('newPassword')
+        user=User.objects.get(id=request.user.id)
+        user.set_password(newPassword)
+        user.save()
+        messages.add_message(request, messages.SUCCESS, "کلمه عبور با موفقیت تغییر یافت")
+
+        return HttpResponseRedirect (reverse("dashbord:operator"))
+
 
 

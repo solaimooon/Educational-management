@@ -6,8 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Title -->
-    <title>داشبورد ادمین</title>
-
+    <title></title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="{% static 'sign_up _ log in _dashbord/favicon.ico' %}">
 
@@ -445,11 +444,11 @@
                                             <i class="bi-person-badge nav-icon"></i>داشبورد
                                         </a>
                                     </li>
-                                    <!--<li class="nav-item">
-                                      <a class="nav-link" href="./account-security.html">
+                                    <li class="nav-item">
+                                      <a class="nav-link" href="{% url 'athentication:update_password' %}">
                                         <i class="bi-shield-shaded nav-icon"></i> امنیت
                                       </a>
-                                    </li>-->
+                                    </li>
 
                                     <li class="nav-item">
                                         <a class="nav-link" href="{% url 'dashbord:profile' pk=request.user.id %}">
@@ -701,7 +700,21 @@
         </div>
     </div>
 </div>
+<!-- ALERT -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <script>swal("ناموفق", "{{ message }}", "error");</script>
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS  %}
+                <script>swal("موفق", "{{ message }}", "success");</script>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}
 
+<!-- END ALERT -->
 
 <!-- JS Implementing Plugins -->
 <script src="{% static 'sign_up _ log in _dashbord/assets/js/vendor.min.js' %}"></script>
