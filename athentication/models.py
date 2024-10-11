@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django_jalali.db import models as jmodels
-
+from django.core.exceptions import ValidationError
 
 # change the name of user instanse for show the full name of teacher in kalss form creation
 def get_full_name(self):
@@ -17,8 +17,8 @@ type = (
     ('Guest',"مهمان")
 )
 
-
 class extra_user_data(models.Model):
+
     sex_choice = (
         ('male', 'مرد'),
         ('female', 'زن')

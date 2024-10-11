@@ -1,8 +1,9 @@
 from django.forms import ModelForm, Textarea
 from django import forms
 from athentication.models import *
-from jalali_date.fields import JalaliDateField, SplitJalaliDateTimeField
-from jalali_date.widgets import AdminJalaliDateWidget, AdminSplitJalaliDateTime
+from jalali_date.fields import JalaliDateField
+from jalali_date.widgets import AdminJalaliDateWidget
+from django.core.exceptions import ValidationError
 
 
 class update_extra_user_data(ModelForm):
@@ -11,15 +12,26 @@ class update_extra_user_data(ModelForm):
         fields = ['age', 'adress', 'meli_cood', 'sex', 'image']
         widgets = {
             'adress': Textarea(attrs={'cols': 80, 'rows': 3}),
-            'sex': forms.RadioSelect(attrs={'class': 'form-check-input'})}
-
-    # override the init function of calss model form for date picker
+            'sex': forms.RadioSelect(attrs={'class': 'form-check-input'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super(update_extra_user_data, self).__init__(*args, **kwargs)
-        self.fields['age'] = JalaliDateField(label=('تاریخ تولد'),  # date format is  "yyyy-mm-dd"
-                                             widget=AdminJalaliDateWidget  # optional, to use default datepicker
-                                             )
+        self.fields['age'] = JalaliDateField(label=('تاریخ تولد'), widget=AdminJalaliDateWidget)
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
+
+        if image:
+            # بررسی اینکه image یک فایل معتبر است
+            if hasattr(image, 'size'):
+                # محدودیت حجم فایل به 100 کیلوبایت
+                if image.size > 100 * 1024:
+                    raise ValidationError("حجم تصویر نمی‌تواند بیشتر از 100 کیلوبایت باشد.")
+            else:
+                return image
+
+
 
 
 class UserForm(forms.ModelForm):
@@ -42,9 +54,8 @@ class UserForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={
                 'class': 'form-control',
                 'id': "emailLabel",
-                'placeholder': 'example@gmial.com',
+                'placeholder': 'example@gmail.com',
             })
-
         }
 
 

@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage,InvalidPage
+from django.contrib import messages
 
 
 @login_required(login_url='/athentication/')
@@ -122,4 +123,10 @@ def profile(request,pk=None):
                 request.session["picture"]=extra_user_data.objects.filter(forign_key=request.user)[0].image.url
                 return HttpResponseRedirect(reverse("dashbord:profile",kwargs={'pk':request.user.id}))
             else:
+                for field, errors in extra_user_data_form.errors.items():
+                    # نمایش خطای مربوط به هر فیلد
+                    for error in errors:
+                        # ارسال خطا به پیام‌ها
+                        messages.error(request, f'خطا در فیلد {field}: {error}')
                 print("سلام ",extra_user_data_form.errors.as_data())  # here you print errors to terminal
+                return HttpResponseRedirect(reverse('dashbord:profile',kwargs={"pk":pk}))
