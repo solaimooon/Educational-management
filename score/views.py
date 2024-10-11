@@ -7,11 +7,13 @@ from .models import *
 import urllib
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 import jdatetime
 # massage framwork
 from django.contrib import messages
 from django.shortcuts import redirect
 
+@login_required(login_url='/athentication/')
 def choose_date_view(request,id):
     # get the klass_id and save to session
     request.session["klass_id"]=request.GET.get("klass_id")
@@ -32,6 +34,7 @@ def choose_date_view(request,id):
     return render(request,'score/choose_date.html',{"dates":list_date})
 
 # save the hozore and score
+@login_required(login_url='/athentication/')
 def post_score_view(request,id=None):
     # (GET method)show the form
     if request.method == 'GET':

@@ -8,10 +8,13 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url='/athentication/')
 def enroll_choose(request):
     return render(request,'enroll/choose_enroll_or_edit.html')
 
-
+@login_required(login_url='/athentication/')
 def create_class_view(request):
     if request.method=='GET':
         # creat the pure form of kalss info and enroll student
@@ -30,17 +33,20 @@ def create_class_view(request):
 
 
 #show class for teather in own dashbord
+@login_required(login_url='/athentication/')
 def my_class_oprator_view(request):
     klass_object=klass.objects.filter(teacher=request.user.id).order_by('-course')
     return render(request,'enroll/my_class.html',{"klass_object":klass_object})
 
 
 #show class for student in own dashbord
+@login_required(login_url='/athentication/')
 def my_class_student_view(request):
     enroll_objects=link_table.objects.filter(student_id=request.user.id)
     return render(request,'enroll/my_class_student.html',{"enroll_objects":enroll_objects})
 
 # report generaly to studnet
+@login_required(login_url='/athentication/')
 def report_general_student_view(request,id_enroll):
     # if user donat have any score so the dont have any record in sum_final
     try:
@@ -59,7 +65,10 @@ def report_general_student_view(request,id_enroll):
     except:
         messages.add_message(request, messages.INFO, "گزارشی برای شما تاکنون ثبت نشده است")
         return HttpResponseRedirect(reverse("enroll:my_class_student"))
+
+
 # report point student
+@login_required(login_url='/athentication/')
 def report_point_detail_view(request):
     pass
 
