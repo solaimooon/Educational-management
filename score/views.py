@@ -63,6 +63,27 @@ def post_score_view(request,id=None):
                 presents_objects=retrive_present_or_absent(request)
                 basic_kosha_form_object=basic_kosha_form()
                 return render(request,'score/basic_form_score.html',{"basic_kosha_form_object":basic_kosha_form_object,"presence_absence_form_object":presence_absence_form_object,"pure_emtiyaz_and_form_object":pure_emtiyaz_and_form_object,"list_of_scores":list_of_scores,"presents_objects":presents_objects})
+            # show the tajvid form
+            elif klass_object.level.name in["تجوید 1/1","تجوید1/2","تجوید2/1","تجوید2/2","تجوید3/1","تجوید3/2","تجوید4/1","تجوید4/2"]:
+                # get emtiyazat that saved before
+                # call the retrive_score_saved
+                list_of_scores = retrive_score_saved(request, date)
+                print(list_of_scores)
+                # get absent or present saved before
+                # call retirve present function
+                presents_objects = retrive_present_or_absent(request)
+                # create the tajvid form
+                tajvid_kosha_form_object=tajvid_kosha_form()
+                return render(request,'score/basic_form_score.html',{"tajvid_kosha_form_object":tajvid_kosha_form_object,"presence_absence_form_object":presence_absence_form_object,"pure_emtiyaz_and_form_object":pure_emtiyaz_and_form_object,"list_of_scores":list_of_scores,"presents_objects":presents_objects})
+            else:
+                # get absent or present saved before
+                # call retirve present function
+                presents_objects = retrive_present_or_absent(request)
+                return render(request, 'score/basic_form_score.html',
+                              {
+                               "presence_absence_form_object": presence_absence_form_object,
+                               "pure_emtiyaz_and_form_object": pure_emtiyaz_and_form_object,
+                                 "presents_objects": presents_objects})
     # (POST method) creat new present and score object
     elif request.method == "POST":
         # creat presence object if "was" field in post request
@@ -77,29 +98,51 @@ def post_score_view(request,id=None):
                     enroll=presence_absence_form_object.cleaned_data['enroll']
                 )
                 request.session["enroll"]=presence_absence_form_object.cleaned_data['enroll'].id
-
                 return HttpResponseRedirect(reverse("score:post_score"))
             else:
                 print(presence_absence_form_object.errors.as_data)
-        # creat score object
-        else:
+        # creat score object for ravankhani
+        elif "gheraat" in request.POST:
             # save score object
-            new_score_pure_object=score.objects.create(enroll=link_table.objects.get(pk=request.POST.get('enroll')),method='kosha_ravankhani',ons=request.POST.get('ons'),date_for=date)
-            basic_kosha_form_object=basic_kosha_form(request.POST)
+            new_score_pure_object = score.objects.create(enroll=link_table.objects.get(pk=request.POST.get('enroll')),
+                                                         method='kosha_ravankhani', ons=request.POST.get('ons'),
+                                                         date_for=date)
+            basic_kosha_form_object = basic_kosha_form(request.POST)
             if basic_kosha_form_object.is_bound:
                 if basic_kosha_form_object.is_valid():
-                    print (basic_kosha_form_object.data.dict())
-                    for name_field,amount_temp in basic_kosha_form_object.cleaned_data.items():
-                        if amount_temp==None:
+                    print(basic_kosha_form_object.data.dict())
+                    for name_field, amount_temp in basic_kosha_form_object.cleaned_data.items():
+                        if amount_temp == None:
                             continue
-                        new_score_amount_object=amount()
-                        new_score_amount_object.score=new_score_pure_object
-                        new_score_amount_object.number=amount_temp
-                        new_score_amount_object.type=type.objects.filter(name=name_field)[0]
-                        print ("number",new_score_amount_object.number)
-                        print("type",new_score_amount_object.type)
+                        new_score_amount_object = amount()
+                        new_score_amount_object.score = new_score_pure_object
+                        new_score_amount_object.number = amount_temp
+                        new_score_amount_object.type = type.objects.filter(name=name_field)[0]
+                        print("number", new_score_amount_object.number)
+                        print("type", new_score_amount_object.type)
                         new_score_amount_object.save()
                     return HttpResponseRedirect(reverse("score:post_score"))
+        # creat score object for tajvid
+        else:
+            # save score object
+            new_score_pure_object = score.objects.create(enroll=link_table.objects.get(pk=request.POST.get('enroll')),
+                                                         method='kosha_tajvid', ons=request.POST.get('ons'),
+                                                         date_for=date)
+            tajvid_kosha_form_object = tajvid_kosha_form(request.POST)
+            if tajvid_kosha_form_object.is_valid():
+                    print(tajvid_kosha_form_object.data.dict())
+                    for name_field, amount_temp in tajvid_kosha_form_object.cleaned_data.items():
+                        if amount_temp == None:
+                            continue
+                        new_score_amount_object = amount()
+                        new_score_amount_object.score = new_score_pure_object
+                        new_score_amount_object.number = amount_temp
+                        new_score_amount_object.type = type.objects.filter(name=name_field)[0]
+                        print("number", new_score_amount_object.number)
+                        print("type", new_score_amount_object.type)
+                        new_score_amount_object.save()
+                    return HttpResponseRedirect(reverse("score:post_score"))
+
 # delete the scores
 def delete_csore_view(request,id):
     if request.method == 'POST':

@@ -42,12 +42,20 @@ class pure_emtiyaz_and_ons_form(forms.Form):
 class basic_kosha_form(forms.Form):
     hozore_va_hamrahi = forms.IntegerField(min_value=0, max_value=30,required=False, label="حضور")
     hefz_hadis = forms.IntegerField(min_value=0, max_value=20,required=False, label="حفظ حدیث")
-    estema_file_soty = forms.IntegerField(min_value=0, max_value=20,required=False, label="اسستماع فایل صوتی")
+    estema_file_soty = forms.IntegerField(min_value=0, max_value=40,required=False, label="اسستماع فایل صوتی")
     rang_amizi_daftar = forms.IntegerField(min_value=0, max_value=20,required=False, label="مرتب بودن دفترچه")
     ravankhani = forms.IntegerField(min_value=0, max_value=60,required=False, label="روانخوانی با کیفیت")
     hegi = forms.IntegerField(min_value=0, max_value=20,required=False, label="هیجی")
     gheraat = forms.IntegerField(min_value=0, max_value=40,required=False, label="قرائت مجلسی")
     other = forms.IntegerField(min_value=0, max_value=20,required=False, label="موارد دیگر")
 
-
+class tajvid_kosha_form(forms.Form):
+    hozore_va_hamrahi = forms.IntegerField(min_value=0, max_value=30, required=False, label="حضور")
+    hefz_hadis = forms.IntegerField(min_value=0, max_value=20, required=False, label="حفظ حدیث")
+    estema_file_soty = forms.IntegerField(min_value=0, max_value=20, required=False, label="اسستماع فایل صوتی")
+    rang_amizi_daftar = forms.IntegerField(min_value=0, max_value=20, required=False, label="مرتب بودن دفترچه")
+    ravankhani = forms.IntegerField(min_value=0, max_value=60, required=False, label="روانخوانی با کیفیت")
+    hegi = forms.IntegerField(min_value=0, max_value=20, required=False, label="هیجی")
+    solve_question = forms.IntegerField(min_value=0, max_value=40, required=False, label="قرائت مجلسی")
+    other = forms.IntegerField(min_value=0, max_value=20, required=False, label="موارد دیگر")
 

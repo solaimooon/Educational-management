@@ -109,9 +109,13 @@
                                             <td>{{ present_object.enroll.student_id.last_name }}</td>
                                             <td>{{ present_object.date }}</td>
                                             {% if present_object.time == None %}
-                                            <td>غایب</td>
+                                                {% if present_object.was_or_not_or == "absent_unwarranted" %}
+                                                    <td>غایب/غیر موجه</td>
+                                                {% else %}
+                                                    <td>غایب/موجه</td>
+                                                {% endif %}
                                             {% else %}
-                                            <td>{{ present_object.time }}</td>
+                                                <td>{{ present_object.time }}</td>
                                             {% endif %}
                                             <td>
                                                 <form id="delete-present-form-{{ present_object.id }}"
@@ -135,6 +139,7 @@
 
                     </div>
                     <!-- sabte emtiyaz body -->
+                {% if basic_kosha_form_object or tajvid_kosha_form_object %}
                     <div class="card mb-3">
                         <div class="card-header border-bottom d-flex justify-content-between align-items-center">
                             <h4 class="card-header-title">ثبت امتیاز</h4>
@@ -158,54 +163,166 @@
                                                 <label for="validationValidInput1">میزان انس </label>
                                                 {{ pure_emtiyaz_and_form_object.ons|as_crispy_field }}
                                             </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="validationValidInput1">امتیاز حضور <i
-                                                        class="bi-question-circle text-body ms-1"
-                                                        data-bs-toggle="tooltip"
-                                                        data-bs-placement="top"
-                                                        aria-label="Displayed on public forums, such as Front."
-                                                        data-bs-original-title="حضور سر وقت و همراهی تا پایان کلاس"></i></label>
-                                                {{ basic_kosha_form_object.hozore_va_hamrahi|as_crispy_field }}
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="validationValidInput1">امتیاز حفظ حدیث</label>
-                                                {{ basic_kosha_form_object.hefz_hadis|as_crispy_field }}
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="validationValidInput1">امتیاز میزان استماع<i
-                                                        class="bi-question-circle text-body ms-1"
-                                                        data-bs-toggle="tooltip"
-                                                        data-bs-placement="top"
-                                                        aria-label="Displayed on public forums, such as Front."
-                                                        data-bs-original-title="استماع فایل صوتی ترتیل قرآن کریم"></i></label>
-                                                {{ basic_kosha_form_object.estema_file_soty|as_crispy_field }}
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="validationValidSelect1"> امتیاز زیبایی دفترچه<i
-                                                        class="bi-question-circle text-body ms-1"
-                                                        data-bs-toggle="tooltip"
-                                                        data-bs-placement="top"
-                                                        aria-label="Displayed on public forums, such as Front."
-                                                        data-bs-original-title="کامل و مرتب بودن و رنگ آمیزی دفترانجام تکالیف"></i>
-                                                </label>
-                                                {{ basic_kosha_form_object.rang_amizi_daftar|as_crispy_field }}
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="validationValidSelect1">امتیاز کیفیت روانخوانی</label>
-                                                {{ basic_kosha_form_object.ravankhani|as_crispy_field }}
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="validationValidSelect1"> امتیاز کیفیت هجی </label>
-                                                {{ basic_kosha_form_object.hegi|as_crispy_field }}
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="validationValidSelect1">امتیاز کیفیت قرائت</label>
-                                                {{ basic_kosha_form_object.gheraat|as_crispy_field }}
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="validationValidSelect1">امتیاز اختیاری</label>
-                                                {{ basic_kosha_form_object.other|as_crispy_field }}
-                                            </div>
+                                            {% if basic_kosha_form_object %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidInput1">امتیاز حضور <i
+                                                            class="bi-question-circle text-body ms-1"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            aria-label="Displayed on public forums, such as Front."
+                                                            data-bs-original-title="حضور سر وقت و همراهی تا پایان کلاس ،حداکثر 30 امتیاز"></i></label>
+                                                    {{ basic_kosha_form_object.hozore_va_hamrahi|as_crispy_field }}
+                                                </div>
+                                            {% else %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidInput1">امتیاز حضور <i
+                                                            class="bi-question-circle text-body ms-1"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            aria-label="Displayed on public forums, such as Front."
+                                                            data-bs-original-title="حضور سر وقت و همراهی تا پایان کلاس ،حداکثر 30 امتیاز"></i></label>
+                                                    {{ tajvid_kosha_form_object.hozore_va_hamrahi|as_crispy_field }}
+                                                </div>
+                                            {% endif %}
+                                            {% if basic_kosha_form_object %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidInput1">حفظ حدیث <i
+                                                            class="bi-question-circle text-body ms-1"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            aria-label="Displayed on public forums, such as Front."
+                                                            data-bs-original-title="حداکثر 20 امتیاز"></i></label>
+                                                    {{ basic_kosha_form_object.hefz_hadis|as_crispy_field }}
+                                                </div>
+                                            {% else %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidInput1">حفظ حدیث <i
+                                                            class="bi-question-circle text-body ms-1"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            aria-label="Displayed on public forums, such as Front."
+                                                            data-bs-original-title="حداکثر 20 امتیاز"></i></label>
+                                                    {{ tajvid_kosha_form_object.hefz_hadis|as_crispy_field }}
+                                                </div>
+                                            {% endif %}
+                                            {% if basic_kosha_form_object %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidInput1">امتیاز میزان استماع<i
+                                                            class="bi-question-circle text-body ms-1"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            aria-label="Displayed on public forums, such as Front."
+                                                            data-bs-original-title="استماع فایل صوتی ترتیل قرآن کریم،حداکثر 20 امتیاز"></i></label>
+                                                    {{ basic_kosha_form_object.estema_file_soty|as_crispy_field }}
+                                                </div>
+                                            {% else %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidInput1">امتیاز میزان استماع<i
+                                                            class="bi-question-circle text-body ms-1"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            aria-label="Displayed on public forums, such as Front."
+                                                            data-bs-original-title="استماع فایل صوتی ترتیل قرآن کریم،حداکثر 20 امتیاز"></i></label>
+                                                    {{ tajvid_kosha_form_object.estema_file_soty|as_crispy_field }}
+                                                </div>
+                                            {% endif %}
+                                            {% if basic_kosha_form_object %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidSelect1"> امتیاز زیبایی دفترچه<i
+                                                            class="bi-question-circle text-body ms-1"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            aria-label="Displayed on public forums, such as Front."
+                                                            data-bs-original-title="کامل و مرتب بودن و رنگ آمیزی دفترانجام تکالیف،حداکثر20 امتیاز"></i>
+                                                    </label>
+                                                    {{ basic_kosha_form_object.rang_amizi_daftar|as_crispy_field }}
+                                                </div>
+                                            {% else %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidSelect1"> امتیاز زیبایی دفترچه<i
+                                                            class="bi-question-circle text-body ms-1"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            aria-label="Displayed on public forums, such as Front."
+                                                            data-bs-original-title="کامل و مرتب بودن و رنگ آمیزی دفترانجام تکالیف،حداکثر20 امتیاز"></i>
+                                                    </label>
+                                                    {{ tajvid_kosha_form_object.rang_amizi_daftar|as_crispy_field }}
+                                                </div>
+                                            {% endif %}
+                                            {% if basic_kosha_form_object %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidSelect1"> امتیاز روانخوانی<i
+                                                            class="bi-question-circle text-body ms-1"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            aria-label="Displayed on public forums, such as Front."
+                                                            data-bs-original-title="روخوانی با کیفیت،حداکثر 60 امتیاز"></i></label>
+                                                    {{ basic_kosha_form_object.ravankhani|as_crispy_field }}
+                                                </div>
+                                            {% else %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidSelect1"> امتیاز روانخوانی<i
+                                                            class="bi-question-circle text-body ms-1"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            aria-label="Displayed on public forums, such as Front."
+                                                            data-bs-original-title="روخوانی با کیفیت،حداکثر 60 امتیاز"></i></label>
+                                                    {{ tajvid_kosha_form_object.ravankhani|as_crispy_field }}
+                                                </div>
+                                            {% endif %}
+                                            {% if basic_kosha_form_object %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidSelect1"> امتیاز هجی<i
+                                                            class="bi-question-circle text-body ms-1"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            aria-label="Displayed on public forums, such as Front."
+                                                            data-bs-original-title="هجی کلمات قرانی ، حداکثر 20 امتیاز"></i></label>
+                                                    {{ basic_kosha_form_object.hegi|as_crispy_field }}
+                                                </div>
+                                            {% else %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidSelect1"> امتیاز هجی<i
+                                                            class="bi-question-circle text-body ms-1"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            aria-label="Displayed on public forums, such as Front."
+                                                            data-bs-original-title="هجی کلمات قرانی ، حداکثر 20 امتیاز"></i></label>
+                                                    {{ tajvid_kosha_form_object.hegi|as_crispy_field }}
+                                                </div>
+                                            {% endif %}
+                                            {% if basic_kosha_form_object %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidSelect1"> کیفیت قرائت<i
+                                                            class="bi-question-circle text-body ms-1"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            aria-label="Displayed on public forums, such as Front."
+                                                            data-bs-original-title="هقرائت مجلسی با کیفیت ، حداکثر 40 امتیاز"></i></label>
+                                                    {{ basic_kosha_form_object.gheraat|as_crispy_field }}
+                                                </div>
+                                            {% else %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidSelect1"> پاسخگویی و حل تمارین جزوه<i
+                                                            class="bi-question-circle text-body ms-1"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            aria-label="Displayed on public forums, such as Front."
+                                                            data-bs-original-title="پاسخ گویی و حل تمارین جزوه ، حداکثر 40 امتیاز"></i></label>
+                                                    {{ tajvid_kosha_form_object.solve_question|as_crispy_field }}
+                                                </div>
+                                            {% endif %}
+                                            {% if basic_kosha_form_object %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidSelect1">امتیاز اختیاری</label>
+                                                    {{ basic_kosha_form_object.other|as_crispy_field }}
+                                                </div>
+                                            {% else %}
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="validationValidSelect1">امتیاز اختیاری</label>
+                                                    {{ tajvid_kosha_form_object.other|as_crispy_field }}
+                                                </div>
+                                            {% endif %}
                                         </div>
                                         <div class="card-footer pt-0">
                                             <div class="d-flex justify-content-end gap-3">
@@ -228,7 +345,11 @@
                                                 <th scope="col">دفترچه</th>
                                                 <th scope="col">روانخوانی</th>
                                                 <th scope="col">هجی</th>
-                                                <th scope="col">قرائت</th>
+                                                {% if basic_kosha_form_object %}
+                                                    <th scope="col">قرائت</th>
+                                                {% else %}
+                                                    <th scope="col">جزوه</th>
+                                                {% endif %}
                                                 <th scope="col">اختیاری</th>
                                                 <th scope="col">عملیات</th>
                                             </tr>
@@ -310,6 +431,7 @@
                                                         {% endwith %}
                                                     </td>
                                                     <td>
+                                                    {% if basic_kosha_form_object %}
                                                         {% with gheraat="-" %}
                                                             {% for amount in score_list %}
                                                                 {% if amount.type.name == "gheraat" %}
@@ -319,6 +441,17 @@
                                                                 {% endif %}
                                                             {% endfor %}
                                                         {% endwith %}
+                                                    {% else %}
+                                                        {% with gheraat="-" %}
+                                                            {% for amount in score_list %}
+                                                                {% if amount.type.name == "solve_question" %}
+                                                                    {% with gheraat=amount.number %}
+                                                                        {{ gheraat }}
+                                                                    {% endwith %}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        {% endwith %}
+                                                    {% endif %}
                                                     </td>
                                                     <td>
                                                         {% with other="-" %}
@@ -363,6 +496,7 @@
                             <!-- End Body -->
                         </div>
                     </div>
+                {% endif %}
 
                 </div>
             </div>
