@@ -709,7 +709,10 @@
                 <script>swal("ناموفق", "{{ message }}", "error");</script>
             {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS  %}
                 <script>swal("موفق", "{{ message }}", "success");</script>
+            {% else %}
+                <script>swal("", "{{ message }}", "info");</script>
             {% endif %}
+
         {% endfor %}
     </ul>
 {% endif %}
