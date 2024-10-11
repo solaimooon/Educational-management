@@ -44,7 +44,7 @@ class klass_form(forms.ModelForm):
 
 class enroll_student_form(forms.Form):
     students = forms.models.ModelMultipleChoiceField(
-        queryset=User.objects.filter(id__in=extra_user_data.objects.filter(type='Guest').values_list('forign_key')),
+        queryset=User.objects.filter(id__in=extra_user_data.objects.filter(type='Guest',age__isnull=False).values_list('forign_key')),
         widget=forms.SelectMultiple(attrs={'class': 'dual-list-box'})
     )
 

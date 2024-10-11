@@ -11,13 +11,17 @@ class update_extra_user_data(ModelForm):
         model = extra_user_data
         fields = ['age', 'adress', 'meli_cood', 'sex', 'image']
         widgets = {
-            'adress': Textarea(attrs={'cols': 80, 'rows': 3}),
+
             'sex': forms.RadioSelect(attrs={'class': 'form-check-input'}),
         }
 
+    adress=forms.CharField(required=True,max_length=500,widget=forms.Textarea(attrs={'row':2,"col":50
+                                                                                     ,'class': 'form-control'}))
+    meli_cood=forms.CharField(max_length=50,required=True)
+
     def __init__(self, *args, **kwargs):
         super(update_extra_user_data, self).__init__(*args, **kwargs)
-        self.fields['age'] = JalaliDateField(label=('تاریخ تولد'), widget=AdminJalaliDateWidget)
+        self.fields['age'] = JalaliDateField(label=('تاریخ تولد'), widget=AdminJalaliDateWidget,required=True)
 
     def clean_image(self):
         image = self.cleaned_data.get('image')

@@ -106,12 +106,13 @@ def verification (request):
         # validate the user insert the cerect valodation code
         if number == verification_code:
             # update password
-            user=User.objects.get(username=username)
-            if user is not None:
+            user=User.objects.filter(username=username)
+            if len(user) >0:
                 extra_data = extra_user_data.objects.filter(forign_key=user.id)[0]
                 request.session["picture"] =extra_data.image.url
                 login(request, user)
                 return HttpResponseRedirect(reverse('athentication:update_password'))
+            # create user
             else:
                 user = User.objects.create_user(username=username,password=password)
                 extra_user_data.objects.create(forign_key=user)
