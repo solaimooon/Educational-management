@@ -10,7 +10,7 @@ from athentication.models import *
 class klass_form(forms.ModelForm):
         class Meta:
             model = klass
-            fields = ['name', 'course', 'start_date', 'end_data', 'start_time', 'end_time','teacher','level']
+            fields = ['name', 'course', 'start_date', 'end_data', 'start_time', 'end_time','teacher','level','student']
 
             # blow widget for time picker
             widgets = {
@@ -22,8 +22,11 @@ class klass_form(forms.ModelForm):
                 'type': 'time',  # HTML5 time input type
                 'id': 'appt',  # id attribute for the time field
 
-            })
+            }),
+            'student':forms.SelectMultiple(attrs={'required': False})
             }
+
+
 
 
 

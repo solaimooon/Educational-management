@@ -29,7 +29,7 @@ def create_class_view(request):
             students = request.POST.getlist('students')
             print(":دانش اموزان", students)
             klass_object.student.set(students)
-            return redirect("https://toplearn.com/")
+            return HttpResponseRedirect(reverse('enroll:create_class'))
 
 
 #show class for teather in own dashbord
@@ -67,11 +67,35 @@ def report_general_student_view(request,id_enroll):
         return HttpResponseRedirect(reverse("enroll:my_class_student"))
 
 
+
+
+
 # report point student
 @login_required(login_url='/athentication/')
 def report_point_detail_view(request):
     pass
 
+
+def all_class_to_edit_view(request):
+    klass_objects=klass.objects.all()
+    return render(request,'enroll/all_class.html',{"klass_objects":klass_objects})
+
+
+def edit_class_detail_view(request,id):
+    if request.method=='GET':
+        object_class=klass.objects.filter(id=id)[0]
+        form_edit_class_object=klass_form(instance=object_class)
+        return render(request,'enroll/edit_class.html',{"form_edit_class_object":form_edit_class_object})
+    elif request.method == 'POST':
+        object_class = klass.objects.filter(id=id)[0]
+        form_edit_class_object = klass_form(request.POST,instance=object_class)
+        if form_edit_class_object.is_valid():
+            form_edit_class_object.save()
+            return HttpResponseRedirect(reverse("enroll:edit_class"))
+    else:
+        klass.objects.get(id=id).delete()
+        print("حذف")
+        return HttpResponseRedirect(reverse("enroll:edit_class"))
 
 
 

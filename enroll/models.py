@@ -19,7 +19,7 @@ class klass(models.Model):
     end_data=jmodels.jDateField()
     start_time=models.TimeField(null=True)
     end_time=models.TimeField(null=True)
-    student=models.ManyToManyField(User,related_name='have_staudent',through='link_table')
+    student=models.ManyToManyField(User,related_name='have_staudent',through='link_table',blank=True)
     status=models.BooleanField(default=True)
     created_at=models.DateTimeField(auto_now_add=True,null=True)
 
