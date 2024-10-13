@@ -9,7 +9,8 @@ urlpatterns = [
     path('report_student/<int:id_enroll>/',report_general_student_view,name='report'),
     path('report/point/detail/',report_point_detail_view,name='point_report_studnet'),
     path('edit_class/',all_class_to_edit_view,name='edit_class'),
-    path('edit_class_detail/<int:id>',edit_class_detail_view,name='edit_class_detail')
+    path('edit_class_detail/<int:id>',edit_class_detail_view,name='edit_class_detail'),
+    path('report_present_or_absent_according_to_date',report_present_or_absent_according_to_course_date_view,name='report_present_or_absent_date')
 
 
 

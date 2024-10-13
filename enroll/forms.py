@@ -51,6 +51,27 @@ class enroll_student_form(forms.Form):
         widget=forms.SelectMultiple(attrs={'class': 'dual-list-box'})
     )
 
+class report_according_to_data_and_course_form(forms.Form):
+    date = forms.DateField()
+
+    # استفاده از ModelChoiceField برای انتخاب دوره‌ها
+    course = forms.ModelChoiceField(
+        queryset=klass.objects.all().values_list('course').distinct(),  # بارگذاری گزینه‌ها از queryset
+        empty_label="انتخاب کنید"  # برچسب پیش‌فرض
+    )
+
+    CHOICES = [
+        ('present', 'حاضر '),
+        ('absent_unwarranted', 'غایب'),
+
+    ]
+    type = forms.ChoiceField(choices=CHOICES)
+
+    def __init__(self, *args, **kwargs):
+        super(report_according_to_data_and_course_form, self).__init__(*args, **kwargs)
+        self.fields['date'] = JalaliDateField(label=('تاریخ'),  # date format is "yyyy-mm-dd"
+                                              widget=AdminJalaliDateWidget)
+
 
 """class student_picker(forms.Form):
     student = forms.models.ModelMultipleChoiceField(

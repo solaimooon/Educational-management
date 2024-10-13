@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'website',
     'dashbord',
     'enroll',
-    'score'
+    'score',
 
 ]
 

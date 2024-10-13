@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+import re
 from django.shortcuts import redirect
 from .forms import *
 from .models import *
@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Q
 @login_required(login_url='/athentication/')
 def enroll_choose(request):
     return render(request,'enroll/choose_enroll_or_edit.html')
@@ -99,5 +99,39 @@ def edit_class_detail_view(request,id):
 
 
 
+def report_present_or_absent_according_to_course_date_view(request):
+    if request.method=='GET':
+        report_according_to_data_and_course_form_object=report_according_to_data_and_course_form()
+        return render(request,'enroll/present_absent_report_acording_to_date.html',{"form":report_according_to_data_and_course_form_object})
 
+    else:
+        try:
+            date=request.POST.get("date")
+            course=request.POST.get("course")
+            type=request.POST.get("type")
+            my_string = course
+            # استخراج عدد با استفاده از regex
+            number = re.findall(r'\d+', my_string)
 
+            # تبدیل لیست به عدد صحیح
+            if number:
+                course = int(number[0])
+            klass_objects=klass.objects.filter(course=course)
+            enroll_objects=link_table.objects.filter(klass_id__in=klass_objects)
+            if type=='present':
+                presents_or_absent_object=presence_absence.objects.filter(date=date,enroll__in=enroll_objects,was_or_not_or='present')
+                report_according_to_data_and_course_form_object = report_according_to_data_and_course_form(initial={'date':date,"course":course,"type":type})
+                counter = presents_or_absent_object.count()
+                return render(request, 'enroll/present_absent_report_acording_to_date.html',
+                              {"presents_or_absent_object": presents_or_absent_object,"form":report_according_to_data_and_course_form_object,"counter":counter})
+
+            else:
+                presents_or_absent_object = presence_absence.objects.filter(Q(date=date, enroll__in=enroll_objects,
+                                                                            was_or_not_or='absent_unwarranted') |Q(date=date, enroll__in=enroll_objects,
+                                                                            was_or_not_or='absent_warranted'))
+                counter=presents_or_absent_object.count()
+                report_according_to_data_and_course_form_object = report_according_to_data_and_course_form(initial={'date':date,"course":course,"type":type})
+                return render(request,'enroll/present_absent_report_acording_to_date.html',{"presents_or_absent_object":presents_or_absent_object,"form":report_according_to_data_and_course_form_object,"counter":counter})
+        except:
+            messages.add_message(request,messages.ERROR,"لطفا مقادیر رو به درستی وارد نمایید")
+            return HttpResponseRedirect(reverse('enroll:report_present_or_absent_date'))

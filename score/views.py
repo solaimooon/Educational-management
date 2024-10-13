@@ -203,6 +203,3 @@ def retrive_present_or_absent(request):
 
 
 
-
-
-
