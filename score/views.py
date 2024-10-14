@@ -9,6 +9,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 import jdatetime
+import re
 # massage framwork
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -198,6 +199,25 @@ def retrive_present_or_absent(request):
     enrolls = link_table.objects.filter(klass_id=request.session.get("klass_id"))
     present_object=presence_absence.objects.filter(enroll__in=enrolls,date=date)
     return present_object
+
+# report score for operator Categorize by course
+def report_sumed_score_for_operator_view(request):
+    # retrive the distinct course
+    course=klass.objects.all().values_list('course').distinct()
+    print((course))
+    # remove extra section from course ,example:(,39)
+    course_list=[]
+    for x in course:
+        course_list.append(x[0])
+    print(course_list)
+    dict_course_sumeds={}
+    for x in course_list:
+        klass_object=klass.objects.filter(course=x)
+        enroll_object=link_table.objects.filter(klass_id__in=klass_object)
+        points_objects=SUM_final.objects.filter(enroll__in=enroll_object).order_by('SUM')
+        dict_course_sumeds[x]=points_objects
+    print(dict_course_sumeds)
+    return render(request,'score/report_sumed_point_for_operator.html',{"dict_course_sumeds":dict_course_sumeds})
 
 
 
