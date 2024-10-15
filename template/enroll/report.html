@@ -110,7 +110,7 @@
 
                             <h1>{{ sum_emtiyaz_for_all_session.SUM }}</h1>
                             <p>امتیاز من</p>
-                            <button class="button"> مشاهده جزئیات </button>
+                            <a href="{% url 'score:report_detail_score_chart' enroll=sum_emtiyaz_for_all_session.enroll_id %}"><button class="button"> مشاهده جزئیات </button></a>
                         </div>
                     </div>
                     <div class="card green-card">

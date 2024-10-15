@@ -242,6 +242,48 @@ def report_sumed_score_for_operator_view(request):
     return render(request,'score/report_sumed_point_for_operator.html',{"dict_course_sumeds":dict_course_sumeds})
 
 
+def report_detail_score_chart_view(request, enroll):
+    try:
+
+        scores_queryset = sum_emtiyazat.objects.filter(enroll=enroll).order_by('date_for')
+
+        # دریافت شیء ثبت‌نام
+        enroll_object = link_table.objects.get(id=enroll)
+        klass_id = enroll_object.klass_id_id
+        class_object = klass.objects.get(id=klass_id)
+
+        start_date = str(class_object.start_date)
+        end_date = str(class_object.end_data)
+
+        # تبدیل تاریخ‌ها به datetime objects
+        start_date = datetime.strptime(start_date, "%Y-%m-%d")
+        end_date = datetime.strptime(end_date, "%Y-%m-%d")
+
+        # لیست تاریخ‌های هفتگی
+        list_date = []
+        current_date = start_date
+        while current_date <= end_date:
+            list_date.append(current_date.strftime("%Y-%m-%d"))
+            current_date += timedelta(days=7)
+
+        # ایجاد لیستی از امتیازها بر اساس تاریخ‌ها
+        scores = []
+        for date in list_date:
+            # بررسی اینکه آیا امتیازی برای این تاریخ وجود دارد یا نه
+            score = scores_queryset.filter(date_for=date).first()
+            if score:
+                scores.append(float(score.sumed_emtiyaz))  # تبدیل امتیاز Decimal به float
+            else:
+                scores.append(0)
+        print(scores)
+        # ارسال داده‌ها به قالب
+        return render(request, 'score/chart_student.html', {"dates": list_date, "scores": scores})
+    except:
+        messages.add_message(request,messages.INFO,"لطفا بعدا تلاش کنید")
+
+
+
+
 
 
 
