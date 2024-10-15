@@ -102,9 +102,15 @@ def post_score_view(request,id=None):
                     enroll=presence_absence_form_object.cleaned_data['enroll']
                 )
                 request.session["enroll"]=presence_absence_form_object.cleaned_data['enroll'].id
+                messages.add_message(request,messages.SUCCESS,"با موفقیت ثبت شد")
                 return HttpResponseRedirect(reverse("score:post_score"))
             else:
-                print(presence_absence_form_object.errors.as_data)
+                for field, errors in presence_absence_form_object.errors.items():
+                    # نمایش خطای مربوط به هر فیلد
+                    for error in errors:
+                        # ارسال خطا به پیام‌ها
+                        messages.error(request, f'خطا در فیلد {field}: {error}')
+                return HttpResponseRedirect(reverse("score:post_score"))
         # creat score object for ravankhani
         elif "gheraat" in request.POST:
             # save score object
@@ -125,6 +131,14 @@ def post_score_view(request,id=None):
                         print("number", new_score_amount_object.number)
                         print("type", new_score_amount_object.type)
                         new_score_amount_object.save()
+                    messages.add_message(request,messages.SUCCESS,"با موفقیت ثبت شد ")
+                    return HttpResponseRedirect(reverse("score:post_score"))
+                else:
+                    for field, errors in basic_kosha_form_object.errors.items():
+                        # نمایش خطای مربوط به هر فیلد
+                        for error in errors:
+                            # ارسال خطا به پیام‌ها
+                            messages.error(request, f'خطا در فیلد {field}: {error}')
                     return HttpResponseRedirect(reverse("score:post_score"))
         # creat score object for tajvid
         else:
@@ -145,7 +159,15 @@ def post_score_view(request,id=None):
                         print("number", new_score_amount_object.number)
                         print("type", new_score_amount_object.type)
                         new_score_amount_object.save()
+                    messages.add_message(request,messages.SUCCESS,'با موفقیت ثبت شد')
                     return HttpResponseRedirect(reverse("score:post_score"))
+            else:
+                for field, errors in tajvid_kosha_form_object.errors.items():
+                    # نمایش خطای مربوط به هر فیلد
+                    for error in errors:
+                        # ارسال خطا به پیام‌ها
+                        messages.error(request, f'خطا در فیلد {field}: {error}')
+                return HttpResponseRedirect(reverse("score:post_score"))
 
 # delete the scores
 def delete_csore_view(request,id):

@@ -818,6 +818,20 @@
 <script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
 <!-- Bootstrap CSS -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <script>swal("ناموفق", "{{ message }}", "error");</script>
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS  %}
+                <script>swal("موفق", "{{ message }}", "success");</script>
+            {% else %}
+                <script>swal("", "{{ message }}", "info");</script>
+            {% endif %}
 
+        {% endfor %}
+    </ul>
+{% endif %}
 </body>
 </html>

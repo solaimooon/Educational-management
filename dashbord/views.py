@@ -110,6 +110,7 @@ def profile(request,pk=None):
                 image_user = extra_user_data.objects.filter(forign_key=request.user)[0]
                 image_user.image=extra_user_data_form.cleaned_data["image"]
                 image_user.save()
+                messages.add_message(request,messages.SUCCESS,"اطلاعات با موفقیت ثبت شد")
                 #
                 if phone_form_object.cleaned_data['phone_number'] != "":
                     phone_object=phone()

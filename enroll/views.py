@@ -29,7 +29,16 @@ def create_class_view(request):
             students = request.POST.getlist('students')
             print(":دانش اموزان", students)
             klass_object.student.set(students)
+            messages.add_message(request,messages.SUCCESS,"کلاس با موفقیت ایجاد شد")
             return HttpResponseRedirect(reverse('enroll:create_class'))
+        else:
+            for field, errors in kalss_form_object.errors.items():
+                # نمایش خطای مربوط به هر فیلد
+                for error in errors:
+                    # ارسال خطا به پیام‌ها
+                    messages.error(request, f'خطا در فیلد {field}: {error}')
+            return HttpResponseRedirect(reverse('enroll:create_class'))
+
 
 
 #show class for teather in own dashbord
@@ -91,9 +100,18 @@ def edit_class_detail_view(request,id):
         form_edit_class_object = klass_form(request.POST,instance=object_class)
         if form_edit_class_object.is_valid():
             form_edit_class_object.save()
+            messages.add_message(request,messages.SUCCESS, "اطلاعات با موفقیت ثبت شد")
+            return HttpResponseRedirect(reverse("enroll:edit_class"))
+        else:
+            for field, errors in form_edit_class_object.errors.items():
+                # نمایش خطای مربوط به هر فیلد
+                for error in errors:
+                    # ارسال خطا به پیام‌ها
+                    messages.error(request, f'خطا در فیلد {field}: {error}')
             return HttpResponseRedirect(reverse("enroll:edit_class"))
     else:
         klass.objects.get(id=id).delete()
+        messages.add_message(request, messages.SUCCESS, "با موفقیت حذف شد")
         print("حذف")
         return HttpResponseRedirect(reverse("enroll:edit_class"))
 

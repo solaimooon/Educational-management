@@ -108,9 +108,9 @@ def verification (request):
             # update password
             user=User.objects.filter(username=username)
             if len(user) >0:
-                extra_data = extra_user_data.objects.filter(forign_key=user.id)[0]
+                extra_data = extra_user_data.objects.filter(forign_key=user[0].pk)[0]
                 request.session["picture"] =extra_data.image.url
-                login(request, user)
+                login(request, user[0])
                 return HttpResponseRedirect(reverse('athentication:update_password'))
             # create user
             else:
@@ -128,7 +128,6 @@ def update_password_view(request):
         user.set_password(newPassword)
         user.save()
         messages.add_message(request, messages.SUCCESS, "کلمه عبور با موفقیت تغییر یافت")
-
         return HttpResponseRedirect (reverse("dashbord:operator"))
 
 

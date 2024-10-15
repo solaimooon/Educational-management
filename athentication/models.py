@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django_jalali.db import models as jmodels
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.core.exceptions import ValidationError
+from django.contrib import messages
 
 # change the name of user instanse for show the full name of teacher in kalss form creation
 def get_full_name(self):
@@ -33,6 +36,8 @@ class extra_user_data(models.Model):
     image=models.ImageField(upload_to='personality_picture/',default="personality_picture/boy.png")
 
 
+
+
 class phone(models.Model):
     phone_owner = (
         ('itself', 'شخصی'),
@@ -43,4 +48,3 @@ class phone(models.Model):
     owner = models.CharField(max_length=6, choices=phone_owner,blank=True, verbose_name='مالکیت')
     forign_key = models.ForeignKey(User, on_delete=models.CASCADE,)
 
-# Create your models here.
