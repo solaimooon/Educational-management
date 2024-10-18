@@ -87,13 +87,13 @@ def verification (request):
         # creat the random number between the range give it
         verification_code = random.randint(1001, 9999)
         print(verification_code)
-        key = '4338526C6C676E4C6932475636665246734C336E6F53666D735643652F3836627850537A426F796E674A4D3D'
+        key = '78634F47647561304B41467244444B344B7172625A73766939754C5644654376777A44726D6E6476517A383D'
         # this is the api of cavenegar , pass the key to url
         api = 'https://api.kavenegar.com/v1/%s/verify/lookup.json' % key
         # data must be send to api
         paloyd = {'receptor': str(username), 'token': str(verification_code), "template": "verify"}
         # request to kavenegar to send massage
-        #response = requests.post(api, data=paloyd)
+        response = requests.post(api, data=paloyd)
         return render(request,'sign up _ log in/verification.html')
     elif request.method=='POST':
         # get the numbers
